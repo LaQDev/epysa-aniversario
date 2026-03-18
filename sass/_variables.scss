@@ -1,0 +1,223 @@
+/* _variables.scss - Versión Definitiva */
+
+/* =========================================
+   1. PALETA BASE (Tus colores exactos)
+   ========================================= */
+// ROJO
+$rojo-50: #FFF0F0;
+$rojo-100: #FFDEDE;
+$rojo-200: #FEBFBF;
+$rojo-300: #FE9A9B;
+$rojo-400: #FE7172;
+$rojo-500: #FE3539;
+$rojo-600: #E30613;
+$rojo-700: #AD030C;
+$rojo-800: #790205;
+$rojo-900: #480102;
+$rojo-950: #310001;
+
+// BEIGE
+$beige-50: #F8F6F3;
+$beige-100: #F3F1EB;
+$beige-200: #E5E0D2;
+$beige-300: #C5C1B3;
+$beige-400: #A7A398;
+$beige-500: #8A867D;
+$beige-600: #6D6A63;
+$beige-700: #504E48;
+$beige-800: #363530;
+$beige-900: #1E1D1B;
+$beige-950: #141311;
+
+// AZUL
+$azul-50: #F1F3FE;
+$azul-100: #E2E8FD;
+$azul-200: #C1CDFA;
+$azul-300: #A2B7F8;
+$azul-400: #81A0F6;
+$azul-500: #5688F3;
+$azul-600: #2E73E5;
+$azul-700: #255FC1;
+$azul-800: #1C4C9C;
+$azul-900: #0B2858;
+$azul-950: #041637;
+
+// VERDE
+$verde-50: #C2FFD1;
+$verde-100: #62FF95;
+$verde-200: #00E16D;
+$verde-300: #01C25D;
+$verde-400: #01A14C;
+$verde-500: #00843D;
+$verde-600: #00682F;
+$verde-700: #005022;
+$verde-800: #003715;
+$verde-900: #00210A;
+$verde-950: #001505;
+
+// AMARILLO
+$amarillo-50: #FFF5EB;
+$amarillo-100: #FFE7CF;
+$amarillo-200: #FFCF92;
+$amarillo-300: #FFB81B;
+$amarillo-400: #D89B00;
+$amarillo-500: #B37F00;
+$amarillo-600: #8C6302;
+$amarillo-700: #6A4A00;
+$amarillo-800: #4A3300;
+$amarillo-900: #2A1B00;
+$amarillo-950: #1D1100;
+
+// GRIS
+$gris-50: #F3F3F3;
+$gris-100: #E8E8E8;
+$gris-200: #D1D1D1;
+$gris-300: #BBBBBB;
+$gris-400: #A6A6A6;
+$gris-500: #8E8E8E;
+$gris-600: #797979;
+$gris-700: #666666;
+$gris-800: #525252;
+$gris-900: #404040;
+$gris-950: #242424;
+
+// NEUTRAL
+$neutral-0: #FFFFFF;
+$neutral-50: #F1F1F1;
+$neutral-100: #E5E5E5;
+$neutral-200: #C9C9C9;
+$neutral-300: #B0B0B0;
+$neutral-400: #969696;
+$neutral-500: #7E7E7E;
+$neutral-600: #636363;
+$neutral-700: #4B4B4B;
+$neutral-800: #323232;
+$neutral-900: #1D1D1D;
+$neutral-950: #111111;
+
+
+/* =========================================
+   2. MAPEO SEMÁNTICO (El cerebro del diseño)
+   ========================================= */
+
+// Identidad
+$brand-primary: $rojo-600; // Color principal Epysa
+$brand-secondary: $azul-900; // Usado en Footers o textos oscuros corporativos
+$brand-accent: $amarillo-300; // Detalles brillantes
+
+// Textos
+$text-primary: $neutral-900; // Títulos y cuerpo principal
+$text-secondary: $gris-600; // Bajadas, fechas, meta-data
+$text-inverse: $neutral-0; // Texto sobre fondos oscuros
+
+// UI Elements (Botones y Formularios)
+$ui-border: $neutral-200; // Bordes de inputs y tarjetas
+$ui-bg-light: $beige-50; // Fondos de secciones claras
+$ui-bg-card: $neutral-0; // Fondo de tarjetas
+
+// Estados del Sistema (Feedback al usuario)
+$state-success: $verde-500; // Ej: "Voto registrado", "Mensaje enviado"
+$state-warning: $amarillo-300; // Alerta (Usamos el 300 que es brillante)
+$state-error: $rojo-600; // Ej: "Campo obligatorio"
+$state-info: $azul-500; // Mensajes informativos
+
+$color-fondo-body: $neutral-0;
+$color-texto-principal: $text-primary;
+
+/* =========================================
+   3. VALORES EPYSA (Etiquetas y Categorías)
+   ========================================= */
+/* He asignado los colores basándome en los 5 colores de tu paleta.
+   Corrige aquí si la asignación no es exacta al diseño. */
+
+$val-pasion: $rojo-600; // Pasión
+$val-innovacion: $azul-600; // Innovación (Asumido)
+$val-seguridad: $verde-500; // Seguridad (Asumido)
+$val-amistad: $amarillo-400; // Amistad (Asumido)
+$val-entereza: $beige-600; // Entereza (Asumido)
+
+/* =========================================
+   4. ESPACIADO Y LAYOUT (Sistema de Grilla)
+   ========================================= */
+$container-max-width: 1240px; // Ancho estándar moderno
+$header-height: 80px;
+
+/* ESPACIADOS (Sistema 8px/10px) */
+$sp-xs:   8px;
+$sp-smd:  12px;  /* NUEVO: Espacio específico entre Pretitulo y Título */
+$sp-sm:   16px;
+$sp-md:   20px;
+$sp-lg:   40px;  /* Padding Superior Tarjeta */
+$sp-xl:   50px;  /* Padding Lateral Tarjeta */
+$sp-xxl:  80px;  /* Padding Inferior Tarjeta */
+
+/* 2. FUENTES (Confirmación) */
+$fz-sm:   14px;  /* Para Pretitulo y Descripción */
+$fz-md:   20px;  /* Para Título de tarjeta */
+$lh-body: 22px;  /* Line-height específico solicitado */
+
+// Bordes
+$radius-sm: 4px;
+$radius-md: 8px; // Usado en tarjetas de votación
+$radius-lg: 16px; // Usado en modales
+$radius-pill: 50px; // Usado en botones
+
+/* =========================================
+   5. TIPOGRAFÍA (Poppins)
+   ========================================= */
+
+// Familia
+$font-primary: 'Poppins', sans-serif;
+
+// Pesos (Weights)
+$fw-light: 300; // Textos finos o grandes displays
+$fw-regular: 400; // Cuerpo de texto normal
+$fw-medium: 500; // Botones y etiquetas
+$fw-semibold: 600; // Subtítulos destacados
+$fw-bold: 700; // Títulos principales (H1, H2)
+
+// Tamaños (Type Scale - Base 16px)
+// Usamos 'rem' para accesibilidad. 1rem = 16px aprox.
+$fz-xs: 0.75rem; // 12px (Legal, etiquetas pequeñas)
+$fz-sm: 0.875rem; // 14px (Meta-data, fecha)
+$fz-base: 1rem; // 16px (Cuerpo de texto estándar)
+$fz-md: 1.125rem; // 18px (Intro o textos destacados)
+$fz-lg: 1.25rem; // 20px (Títulos de tarjetas)
+$fz-xl: 1.5rem; // 24px (H3)
+$fz-2xl: 2rem; // 32px (H2)
+$fz-3xl: 2.5rem; // 40px (H1)
+$fz-giant: 3.5rem; // 56px (Hero Banners grandes)
+
+// Altura de línea (Line Height)
+$lh-tight: 1.1; // Para títulos grandes
+$lh-base: 1.5; // Para lectura cómoda
+$lh-loose: 1.8; // Para textos cortos muy legibles
+
+/* =========================================
+   6. GRID & BREAKPOINTS (Sistema Responsive)
+   ========================================= */
+/* Datos basados en tu tabla de Figma */
+
+// A. Breakpoints (Puntos de quiebre - Min-Width)
+$bp-mobile-xl: 576px; // Mobile XL
+$bp-tablet: 768px; // Tablet
+$bp-laptop: 1200px; // Laptop
+$bp-desktop: 1400px; // Desktop
+$bp-desktop-xl: 1900px; // Desktop XL
+
+// B. Anchos del Contenedor (Container Max-Widths)
+$cw-mobile-xl: 540px; // Container en Mobile XL
+$cw-tablet: 720px; // Container en Tablet
+$cw-laptop: 1140px; // Container en Laptop
+$cw-desktop: 1320px; // Container en Desktop y superiores
+
+// C. Configuración de Grilla
+$grid-gutter: 24px; // Espaciado entre columnas (Gutter)
+$grid-columns: 12; // Total de columnas
+
+/* Variables Específicas Tarjetas Valores */
+$card-width:      200px; /* Ancho máximo solicitado */
+$card-pad-x:      26px;  /* Padding lateral (Promedio entre 26 y 27) */
+$card-pad-y:      28px;  /* Padding vertical aproximado */
+$card-gap:        13px;  /* Espacio entre elementos (título/texto) */
+$card-icon-size:  67px;  /* Tamaño máximo icono */

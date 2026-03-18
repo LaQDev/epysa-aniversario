@@ -1,0 +1,33 @@
+/* sass/_votacion.scss */
+@use 'variables' as *;
+
+/* Botón estado "Ya votado" (Para Grilla y Modal) */
+.btn-quitar-voto {
+    background-color: $gris-900 !important;
+    /* Gris Oscuro solicitado */
+    color: #FFFFFF !important;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    /* Mismas dimensiones que btn-votar para evitar saltos */
+    padding: 12px 0;
+    width: 100%;
+    max-width: 250px;
+    /* Para grilla */
+
+    &:hover {
+        background-color: lighten($gris-900, 10%) !important;
+        transform: translateY(-2px);
+    }
+}
+
+/* Ajuste específico dentro del Modal */
+.modal-actions .btn-quitar-voto {
+    padding: 12px 30px;
+    width: 100%;
+}

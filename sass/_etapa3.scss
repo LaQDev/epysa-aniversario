@@ -1,0 +1,507 @@
+/* sass/_etapa3.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* =========================================
+   SECCIÓN: HISTORIAS GANADORAS (ETAPA 3)
+   ========================================= */
+.section-ganadores {
+    padding: $sp-lg 0;
+    background-color: $beige-100;
+
+    @include respond-to(laptop) {
+        padding: $sp-xxl 0;
+    }
+
+    .section-title {
+        color: $neutral-900;
+        text-align: center;
+        /* Ajuste 3: Título centrado */
+        margin-bottom: $sp-lg;
+        /* Ajuste 5: Gap de 40px con la primera card */
+    }
+
+    .winner-card {
+        display: flex;
+        padding: 40px;
+        flex-direction: column;
+        /* Apilado por defecto en móvil */
+        align-items: flex-start;
+        gap: 24px;
+        /* Gap entre Izquierda y Derecha (En móvil es vertical) */
+        align-self: stretch;
+        border-radius: 20px;
+        background: $neutral-0;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        z-index: 1;
+
+        @include respond-to(laptop) {
+            flex-direction: row;
+            /* Lado a lado en Desktop */
+            align-items: center;
+        }
+
+        /* --- PARTE IZQUIERDA (Imagen 1/3) --- */
+        .winner-left {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background-color: $beige-200;
+            z-index: 2;
+
+            @include respond-to(laptop) {
+                /* Ocupa aprox un tercio menos el gap proporcional */
+                width: calc(33.333% - 12px);
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                aspect-ratio: 1 / 1;
+                /* Forzamos a que sea cuadrada/proporcionada */
+            }
+
+            .placeholder-img {
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                background-color: $neutral-200;
+            }
+        }
+
+        /* --- PARTE DERECHA (Información 2/3) --- */
+        .winner-right {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            /* Gap entre Parte Superior, Central e Inferior */
+            width: 100%;
+            z-index: 2;
+            flex: 1;
+
+            /* Parte Superior (Badges) */
+            .winner-right-top {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                align-items: center;
+
+                /* AJUSTE 1: Espacio entre elementos a los extremos */
+                justify-content: space-between;
+                width: 100%;
+
+                .winner-badge {
+                    display: inline-flex;
+                    padding: 3px 15px;
+                    align-items: center;
+                    gap: 8px;
+                    border-radius: 60px;
+                    font-family: $font-primary;
+                    font-weight: $fw-bold;
+                    font-size: 14px;
+
+                    /* AJUSTE: Tamaño del icono de medalla a 23px */
+                    img {
+                        width: 23px;
+                        height: 23px;
+                        object-fit: contain;
+                    }
+                }
+
+                .pill-valor {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 3px 15px;
+                    border-radius: 60px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    background: $neutral-0;
+                    border: 1px solid currentColor;
+                    text-transform: capitalize;
+
+                    &.val-pasion {
+                        color: $rojo-600;
+                    }
+
+                    &.val-amistad {
+                        color: $amarillo-400;
+                    }
+
+                    &.val-entereza {
+                        color: $verde-500;
+                    }
+
+                    &.val-innovacion {
+                        color: $azul-800;
+                    }
+
+                    &.val-seguridad {
+                        color: $gris-800;
+                    }
+
+                    img {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+
+            /* Parte Central (Textos) */
+            .winner-right-mid {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .story-author {
+                    font-size: 24px;
+                    font-weight: 800;
+                    color: $neutral-900;
+                    margin: 0;
+                    line-height: 1.2;
+                }
+
+                .story-tenure {
+                    font-size: 14px;
+                    color: $neutral-600;
+                    margin: 0;
+                }
+
+                .story-excerpt {
+                    font-size: 15px;
+                    font-style: italic;
+                    color: $neutral-900;
+                    line-height: 1.6;
+                    margin: 0;
+                }
+            }
+
+            /* Parte Inferior (Botón) */
+            .winner-right-bottom {
+                margin-top: auto;
+
+                .btn-link-read {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    color: $rojo-600;
+                    text-decoration: underline;
+                    font-weight: 700;
+                    cursor: pointer;
+                    font-family: $font-primary;
+                    font-size: 16px;
+
+                    &:hover {
+                        color: darken($rojo-600, 10%);
+                    }
+                }
+            }
+        }
+
+        /* =========================================
+           VARIANTES DE BORDE Y COLOR POR LUGAR
+           ========================================= */
+
+        /* PRIMER LUGAR */
+        &.place-1 {
+            border: 1px solid $amarillo-300;
+
+            .winner-badge {
+                background-color: $amarillo-200;
+                color: $amarillo-600;
+            }
+
+            /* Ajuste 1: Trama de fondo solo para el 1er lugar */
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 50%;
+                height: 100%;
+                background-image: url('../assets/images/bg-50-md.svg');
+                background-repeat: no-repeat;
+                background-position: 30px center;
+                /* Ajuste solicitado */
+                background-size: cover;
+                opacity: 1;
+                /* Ajuste solicitado */
+                z-index: 0;
+                pointer-events: none;
+            }
+        }
+
+        /* SEGUNDO LUGAR */
+        &.place-2 {
+            border: 1px solid $gris-400;
+
+            .winner-badge {
+                background-color: $gris-300;
+                color: $neutral-0;
+            }
+        }
+
+        /* TERCER LUGAR */
+        &.place-3 {
+            border: 1px solid $amarillo-600;
+
+            .winner-badge {
+                background-color: $amarillo-400;
+                color: $neutral-0;
+            }
+        }
+    }
+}
+
+/* =========================================
+   SECCIÓN: GANADORES DEL SORTEO (ETAPA 3)
+   ========================================= */
+.section-sorteo {
+    /* 3. Padding top y bottom de 40px */
+    padding: $sp-lg 0;
+    background-color: $beige-100;
+
+    .sorteo-header {
+        text-align: center;
+        /* 4. Gap de 40px entre la bajada y las cards */
+        margin-bottom: $sp-lg;
+
+        .section-title {
+            color: $neutral-900;
+            /* 4. Gap de 10px entre el título y la bajada */
+            margin-bottom: 10px;
+        }
+
+        .sorteo-subtitle {
+            font-size: 18px;
+            color: $neutral-900;
+            margin: 0;
+            line-height: 1.5;
+
+            /* Aseguramos que si ACF imprime un <p> interno, no agregue márgenes no deseados */
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+    /* 6 y 9. Contenedor de las Cards (Apilado en móvil, Lado a lado en Desktop) */
+    .sorteo-grid {
+        display: flex;
+        flex-direction: column;
+        gap: $sp-lg;
+        /* Gap de 40px apilado en móviles */
+
+        @include respond-to(laptop) {
+            flex-direction: row;
+            /* Fila en 1200px */
+            gap: 24px;
+            /* Gap entre columnas en desktop */
+        }
+
+        /* 7 y 8. Estructura de la Card */
+        .sorteo-card {
+            flex: 1;
+            /* Para que las 3 midan exactamente lo mismo de ancho */
+            display: flex;
+            padding: $sp-lg;
+            /* 40px internos */
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            /* 20px entre Icono -> Info -> Premio */
+            border-radius: 10px;
+            border: 1px dashed $amarillo-300;
+            /* Borde segmentado */
+            background: $neutral-0;
+
+            .sorteo-icon {
+                /* Icono 90x90px */
+                width: 90px;
+                height: 90px;
+                flex-shrink: 0;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    display: block;
+                }
+            }
+
+            .sorteo-info {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                /* Pequeño respiro entre Nombre y Área */
+
+                .sorteo-name {
+                    font-size: 24px;
+                    font-weight: $fw-bold;
+                    /* Negrita pesada */
+                    color: $neutral-900;
+                    margin: 0;
+                    line-height: 1.2;
+                }
+
+                .sorteo-area {
+                    font-size: 16px;
+                    color: $neutral-900;
+                    margin: 0;
+                    line-height: 1.4;
+                }
+            }
+
+            .sorteo-prize {
+                font-size: 20px;
+                font-weight: $fw-bold;
+                /* Negrita pesada */
+                color: $neutral-900;
+                margin: 0;
+                line-height: 1.2;
+            }
+        }
+    }
+}
+
+/* =========================================
+   SECCIÓN: HISTORIAS DESTACADAS (ETAPA 3)
+   ========================================= */
+.section-destacadas {
+    /* Hereda fondo y trama de .section-historias */
+    padding: $sp-lg 0;
+
+    @include respond-to(laptop) {
+        padding: $sp-xxl 0;
+    }
+
+    .story-card {
+
+        /* Ajustamos el flex de la tarjeta para que la columna de imagen 
+           pueda stackear verticalmente la foto y el badge */
+        .story-img-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 120px; // Un poco más ancho para acomodar el badge
+
+            .pill-valor {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 4px 12px;
+                border-radius: 50px;
+                font-size: 12px;
+                font-weight: 700;
+                background: $neutral-0;
+                border: 1px solid currentColor;
+                white-space: nowrap;
+
+                img {
+                    width: 14px;
+                    height: 14px;
+                }
+
+                &.val-pasion {
+                    color: $rojo-600;
+                }
+
+                &.val-amistad {
+                    color: $amarillo-400;
+                }
+
+                &.val-entereza {
+                    color: $verde-500;
+                }
+
+                &.val-innovacion {
+                    color: $azul-800;
+                }
+
+                &.val-seguridad {
+                    color: $gris-800;
+                }
+            }
+        }
+
+        .story-content-col {
+            .story-name {
+                font-size: 20px;
+            }
+
+            .btn-story-trigger {
+                margin-top: 15px;
+            }
+        }
+    }
+}
+
+/* =========================================
+   SECCIÓN: BANNER DE CIERRE (ETAPA 3)
+   ========================================= */
+.banner-cierre {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    background-color: $rojo-600;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    @include respond-to(tablet) {
+        min-height: 500px;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+
+        /* Ajuste 2: Trama a la derecha */
+        right: 3%;
+        top: -10px;
+        bottom: -40px;
+        width: 150px;
+
+        background-image: url('../assets/images/50-trama-white.svg');
+        background-repeat: repeat-y;
+        background-position: center top;
+        background-size: 100% auto;
+
+        z-index: 0;
+
+        /* Ajuste 1: Opacidad al 100% */
+        opacity: 1;
+        pointer-events: none;
+
+        @include respond-to(tablet) {
+            width: 200px;
+        }
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .banner-cierre-text {
+        font-family: $font-primary;
+        font-weight: $fw-semibold;
+        color: $neutral-0;
+        margin: 0;
+
+        /* Ajuste 3: Texto alineado a la izquierda */
+        text-align: left;
+
+        font-size: 28px;
+        line-height: 1.2;
+
+        @include respond-to(tablet) {
+            font-size: 36px;
+            line-height: 38px;
+        }
+    }
+}

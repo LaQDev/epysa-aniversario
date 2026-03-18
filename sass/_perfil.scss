@@ -1,0 +1,94 @@
+/* sass/_perfil.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.page-perfil-wrapper {
+    background-color: $beige-100;
+    min-height: 80vh;
+    padding: 60px 0;
+
+    background-image: url('../assets/images/bg-50-big-outline.svg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100% auto;
+
+    @include respond-to(mobile) {
+        background-size: cover;
+    }
+}
+
+/* Header del Perfil */
+.profile-header {
+    margin-bottom: 40px;
+
+    .profile-greeting {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 42px;
+        color: $neutral-900;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+    }
+
+    /* 1. Fila Horizontal: Texto + Botón */
+    .profile-actions-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        /* Para móvil */
+
+        .profile-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: $neutral-900;
+            /* 3. Color solicitado */
+            margin: 0;
+        }
+
+        /* 2. Botón Rojo Filled */
+        .btn-change-name {
+            background-color: $rojo-600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: $neutral-0;
+            /* Texto Blanco */
+
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+
+            &:hover {
+                background-color: darken($rojo-600, 5%);
+                transform: translateY(-2px);
+            }
+        }
+    }
+}
+
+.profile-divider {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+/* 4. Título Sección */
+.section-title-profile {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: $neutral-900;
+    margin: 0;
+}
+
+/* NOTA: Como usamos la estructura .story-card-gallery dentro de .galeria-grid-section 
+   en el HTML, heredará automáticamente los estilos de _galeria.scss 
+   (tarjeta beige, layout responsive, etc). 
+   No necesitamos redefinir las tarjetas aquí.
+*/

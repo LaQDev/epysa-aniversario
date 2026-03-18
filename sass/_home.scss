@@ -1,0 +1,1162 @@
+// sass/_home.scss
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    overflow: hidden;
+    color: $neutral-0;
+    display: flex;
+    align-items: center;
+
+    @include respond-to(laptop) {
+        height: 85vh;
+        min-height: 700px;
+    }
+
+    // --- NUEVO MODIFICADOR: BANNER INTERMEDIO ---
+    &.banner-mid {
+        height: auto;
+        min-height: auto;
+        padding: $sp-lg 0;
+        // Padding móvil (ej. 40px)
+
+        @include respond-to(laptop) {
+            padding: $sp-xxl 0;
+            // Padding desktop (80px exactos)
+        }
+
+        // Sobreescribimos clases utilitarias que forzaban el 100% de alto
+        .container.h-100,
+        .row.h-100 {
+            height: auto !important;
+        }
+    }
+
+    // --- A. FONDO ---
+    .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background-color: #000; // Fondo negro por defecto mientras carga
+
+        // Contenedor YouTube
+        .video-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+
+            // Mantener proporción panorámica
+            @media (min-aspect-ratio: 16/9) {
+                height: 56.25vw;
+            }
+
+            @media (max-aspect-ratio: 16/9) {
+                width: 177.78vh;
+            }
+
+            iframe {
+                width: 100%;
+                height: 100%;
+                opacity: 1; // CAMBIO: Video totalmente visible (sin transparencia extra)
+            }
+        }
+
+        .bg-media {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        // CAMBIO: Capa Negra Semitransparente
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            // rgba(0, 0, 0, 0.4) significa:
+            // R: 0, G: 0, B: 0 (Negro)
+            // A: 0.4 (40% de opacidad)
+            // Si quieres que se vea más oscuro, sube a 0.5 o 0.6.
+            // Si quieres que se vea más claro, baja a 0.3.
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    // --- B. CONTENIDO ---
+    .container {
+        position: relative;
+        z-index: 2;
+        // IMPORTANTE: Quitamos height: 100% para que el Flexbox pueda centrarlo
+        height: auto;
+        width: 100%;
+        // Asegura que ocupe el ancho
+    }
+
+    .h-100 {
+        height: 100%;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+
+        @include respond-to(laptop) {
+            max-width: 650px; // Ancho controlado para lectura
+        }
+
+        // 1. BADGE (Pastilla Blanca)
+        .hero-badge {
+            display: inline-block;
+            background-color: $neutral-0; // Fondo blanco
+            color: $brand-primary; // Texto rojo
+            font-size: $fz-sm; // ~14px
+            font-weight: $fw-bold;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 50px; // Forma de píldora
+            margin-bottom: $sp-lg;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        // 2. TÍTULO
+        .hero-title {
+            font-size: $fz-2xl; // 32px móvil
+            font-weight: $fw-bold; // 700 u 800
+            line-height: 1.1;
+            margin-bottom: $sp-md;
+            color: $neutral-0;
+
+            @include respond-to(tablet) {
+                font-size: 2.5rem;
+            }
+
+            @include respond-to(laptop) {
+                font-size: 3.5rem;
+            }
+        }
+
+        // 3. SUBTÍTULO (Bajada con estilos ricos)
+        .hero-subtitle {
+            font-size: $fz-base;
+            line-height: 1.6;
+            margin-bottom: $sp-xl;
+            color: $neutral-0; // Asegurar blanco
+            opacity: 0.95;
+
+            @include respond-to(laptop) {
+                font-size: $fz-md;
+            }
+
+            // Estilos para el texto enriquecido del editor
+            p {
+                margin-bottom: 1em;
+            }
+
+            strong {
+                font-weight: $fw-bold;
+                color: $neutral-0;
+            }
+
+            em {
+                font-style: italic;
+            }
+        }
+
+        .hero-actions {
+            margin-top: $sp-lg;
+        }
+    }
+}
+
+// =========================================
+// SECCIÓN PREMIOS
+// =========================================
+.section-premios {
+    padding: $sp-xxl 0;
+    background-color: $beige-100;
+
+    // 1. TÍTULOS
+    .section-title {
+        color: $neutral-900;
+        font-weight: $fw-bold;
+        font-size: $fz-xl;
+        text-align: center !important;
+        width: 100%;
+        display: block;
+        margin: 0 auto $sp-md auto;
+
+        @include respond-to(laptop) {
+            font-size: $fz-2xl;
+        }
+    }
+
+    .section-subtitle {
+        color: $neutral-900;
+        font-size: $fz-md;
+        text-align: center !important;
+        width: 100%;
+        display: block;
+        margin: 0 auto $sp-xl auto;
+    }
+
+    // 2. STACK TARJETAS
+    .prize-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    // 3. TARJETAS (Zig-Zag con Gap)
+    .prize-card {
+        background-color: $neutral-0;
+        border-radius: 24px;
+        // Radio más pronunciado según imagen
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        // Móvil: Apilado
+
+        // Altura mínima para asegurar presencia
+        min-height: auto;
+
+        // DESKTOP: Zig-Zag
+        @include respond-to(laptop) {
+            flex-direction: row;
+            align-items: stretch;
+            // Estirar ambas columnas al mismo alto
+            min-height: 400px;
+            // Altura base más generosa
+
+            // IMPAR: Texto Izq | Foto Der
+            &.card-text-left {
+                flex-direction: row;
+            }
+
+            // PAR: Foto Izq | Texto Der
+            &.card-text-right {
+                flex-direction: row-reverse;
+            }
+        }
+
+        // --- COLUMNA IMAGEN ---
+        .prize-img-wrapper {
+            width: 100%;
+            height: 250px;
+            // Altura fija en móvil
+            position: relative;
+
+            @include respond-to(laptop) {
+                width: 50%;
+                // Ocupa exactamente la mitad
+                height: auto;
+                // Se adapta a la altura del texto
+                flex: 1;
+                // Crece para llenar espacio
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                // Recorta para llenar sin deformar
+                object-position: center;
+                display: block;
+            }
+        }
+
+        // --- COLUMNA CONTENIDO ---
+        .prize-content {
+            width: 100%;
+            padding: 40px 30px;
+            // Padding generoso
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            // Icono arriba, texto abajo
+            align-items: flex-start;
+            background-color: $neutral-0;
+
+            @include respond-to(laptop) {
+                width: 50%;
+                // Ocupa la otra mitad
+                flex: 1;
+                padding: 60px 50px;
+                // Aumentamos padding interno en desktop
+
+                // AQUÍ ESTÁ EL TRUCO DEL GAP VISUAL
+                // Al tener padding interno grande (60px), se genera el aire 
+                // necesario respecto a la foto sin usar 'gap' externo que rompería el fondo blanco
+            }
+
+            // Icono
+            .prize-icon-wrapper {
+                margin-bottom: 30px;
+                // Espacio fijo
+
+                .prize-icon {
+                    height: 80px;
+                    // Tamaño controlado
+                    width: auto;
+                    display: block;
+                }
+            }
+
+            // Texto
+            .prize-text-group {
+                width: 100%;
+
+                .prize-title {
+                    color: $neutral-900;
+                    font-size: 24px;
+                    // Un poco más grande
+                    font-weight: $fw-bold;
+                    line-height: 1.2;
+                    margin-bottom: 16px;
+                }
+
+                .prize-description {
+                    font-size: 16px;
+                    color: $neutral-900;
+                    line-height: 1.6;
+
+                    p {
+                        margin: 0;
+                    }
+
+                    strong {
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+
+    // 4. FOOTER
+    .section-footer {
+        width: 100%;
+        margin-top: 40px;
+
+        .legal-wrapper {
+            text-align: left;
+            margin-bottom: 40px;
+
+            .legal-link {
+                color: $neutral-900;
+                font-size: $fz-sm;
+                font-style: italic;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .cta-wrapper {
+            text-align: center;
+
+            .btn-primary {
+                background-color: $rojo-600;
+                border: none;
+                border-radius: 50px;
+                padding: 15px 40px;
+                font-size: 18px;
+                font-weight: 700;
+                transition: transform 0.2s;
+
+                &:hover {
+                    transform: translateY(-2px);
+                    background-color: darken($rojo-600, 5%);
+                }
+            }
+        }
+    }
+}
+
+// =========================================
+// SECCIÓN PASOS (Mecánica)
+// =========================================
+.section-pasos {
+    padding: $sp-lg 0;
+    background-color: $beige-200;
+    background-image: url("../assets/images/bg-50-filled.svg");
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: auto;
+
+    &.bg-outline-alt {
+        background-image: url('../assets/images/bg-50-outline.svg');
+    }
+
+    // TÍTULO DE SECCIÓN
+    .section-title {
+        color: $neutral-900;
+        font-weight: $fw-bold;
+        font-size: $fz-xl;
+
+        @include respond-to(laptop) {
+            font-size: $fz-2xl;
+        }
+
+        text-align: left;
+        width: 100%;
+        display: block;
+        padding-top: $sp-lg;
+        padding-bottom: $sp-lg;
+        margin-bottom: 0;
+    }
+
+    // TARJETA DE PASO
+    .step-card {
+        background-color: $neutral-0; // Blanco
+        border-radius: $radius-lg; // Borde redondeado
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        height: 100%; // Ocupa toda la altura de la columna
+        display: flex;
+        flex-direction: column;
+
+        // Aseguramos que la tarjeta esté por encima de la trama
+        position: relative;
+        z-index: 2;
+
+        // PADDINGS EXACTOS DEL DISEÑO
+        padding: $sp-lg 24px $sp-xxl 24px;
+
+        // Desktop: Medidas 40px - 50px - 80px
+        @include respond-to(laptop) {
+            padding-top: $sp-lg;
+            // 40px
+            padding-right: $sp-xl;
+            // 50px
+            padding-bottom: $sp-xxl;
+            // 80px
+            padding-left: $sp-xl;
+            // 50px
+        }
+
+        .step-icon {
+            margin-bottom: $sp-md;
+
+            img {
+                height: 48px;
+                width: auto;
+            }
+        }
+
+        .step-content {
+
+            // Tipografía Pre-Título ("Paso 1")
+            .step-pretitle {
+                display: block;
+                font-size: $fz-sm;
+                color: $brand-primary;
+                margin-bottom: $sp-smd;
+                font-weight: $fw-medium;
+            }
+
+            // Tipografía Título
+            .step-title {
+                font-size: $fz-md;
+                color: $neutral-900;
+                font-weight: $fw-bold;
+                margin-bottom: $sp-md;
+                line-height: 1.2;
+            }
+
+            // Descripción
+            .step-desc {
+                font-size: $fz-sm;
+                color: $neutral-900;
+                line-height: $lh-body;
+            }
+        }
+    }
+}
+
+// =========================================
+// SECCIÓN VALORES (Ajustes Tarjeta 200px)
+// =========================================
+
+.section-valores {
+    padding: 80px 0;
+
+    // 2. AJUSTE DE FONDO (Color + Trama Horizontal)
+    background-color: $beige-300;
+    position: relative;
+    overflow: hidden;
+    // Para que el carrusel no genere scroll horizontal en el navegador
+
+    // Trama de fondo (Pattern)
+    &::before {
+        content: '';
+        position: absolute;
+
+        // Centrado Vertical
+        top: 50%;
+        transform: translateY(-50%);
+
+        // Ancho extendido para asegurar que cubra pantallas grandes
+        left: -10%;
+        width: 120%;
+        height: 100%;
+        // Ocupa la altura para centrar el background dentro
+
+        background-image: url('../assets/images/bg-valores.svg');
+        background-repeat: repeat-x;
+        // Solo repetición horizontal
+        background-position: center center;
+        // Centrado en el contenedor
+        background-size: auto;
+
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0.6;
+        // Ajusta esto si la trama compite mucho con el texto
+    }
+
+    // Aseguramos que el contenido esté sobre la trama
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    // 1. INTRODUCCIÓN
+    .valores-intro {
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 5;
+        // Aseguramos que el texto esté sobre todo
+
+        .section-title {
+            color: $neutral-900;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: $neutral-900;
+            line-height: 1.5;
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+    // 2. CARRUSEL "NETFLIX STYLE" CORREGIDO
+    .valores-swiper {
+        // Hacemos visible el desborde para el efecto Netflix
+        overflow: visible;
+
+        // TRUCO CSS (CLIP-PATH): 
+        // Define una ventana de recorte.
+        // -40px (Arriba): Visible (espacio para sombra)
+        // -200% (Derecha): Visible (deja ver mucho hacia la derecha)
+        // -40px (Abajo): Visible (espacio para sombra)
+        // 0 (Izquierda): CORTE DURO (No deja ver nada a la izquierda del contenedor)
+        clip-path: inset(-40px -200% -40px 0);
+
+        padding: 0;
+        margin: 0;
+
+        .swiper-wrapper {
+            align-items: stretch;
+        }
+
+        .swiper-slide {
+            width: auto;
+            height: auto;
+            display: flex;
+
+            // Separación visual inicial
+            margin-right: 0;
+        }
+    }
+
+    // 3. TARJETA FLIP (Diseño Definitivo)
+    .flip-card {
+        background-color: transparent;
+        width: 200px;
+        height: 300px;
+        perspective: 1000px;
+        cursor: pointer;
+
+        // Contenedor Interno
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            // Sombra suave
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        // Giro SOLO con Click (.flipped)
+        &.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        // Estilos Comunes
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        // --- FRENTE ---
+        .flip-card-front {
+            background-color: $beige-200;
+
+            .icon-wrapper {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 24px;
+
+                .icon-mask {
+                    width: 100%;
+                    height: 100%;
+                    background-color: var(--card-color-start);
+                    -webkit-mask-repeat: no-repeat;
+                    -webkit-mask-position: left center;
+                    -webkit-mask-size: contain;
+                    mask-repeat: no-repeat;
+                    mask-position: left center;
+                    mask-size: contain;
+                }
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .valor-name {
+                font-size: 18px;
+                font-weight: $fw-bold;
+                color: $neutral-900;
+                margin-bottom: 16px;
+                line-height: 1.2;
+                width: 100%;
+            }
+
+            .valor-short-text {
+                font-size: 14px;
+                color: $neutral-900;
+                line-height: 1.5;
+                text-align: left;
+            }
+
+            .flip-indicator {
+                display: none;
+            }
+        }
+
+        // --- DORSO ---
+        .flip-card-back {
+            background: linear-gradient(135deg, var(--card-color-start) 0%, var(--card-color-end) 100%);
+            color: $neutral-0;
+            transform: rotateY(180deg);
+
+            .valor-name-back {
+                font-size: 18px;
+                font-weight: $fw-bold;
+                margin-bottom: 16px;
+                color: $neutral-0;
+                width: 100%;
+                padding-bottom: 10px;
+                border-bottom: none;
+            }
+
+            .valor-desc {
+                font-size: 13px;
+                line-height: 1.5;
+                color: rgba(255, 255, 255, 0.95);
+                position: relative;
+                z-index: 2;
+            }
+
+            .bg-icon {
+                position: absolute;
+                bottom: -10px;
+                right: -10px;
+                width: 100px;
+                height: 100px;
+                opacity: 0.1;
+                background-color: $neutral-0;
+                -webkit-mask-repeat: no-repeat;
+                mask-repeat: no-repeat;
+                pointer-events: none;
+            }
+        }
+    }
+
+    // 4. NAVEGACIÓN
+    .valores-nav-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 40px;
+        padding-right: 20px;
+
+        .swiper-button-custom {
+            width: 48px;
+            height: 48px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+
+            img,
+            svg {
+                width: 100%;
+                height: 100%;
+                display: block;
+                filter: none;
+            }
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            &.swiper-button-disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+// =========================================
+// SECCIÓN HISTORIAS
+// =========================================
+.section-historias {
+    padding: $sp-xxl 0;
+    background-color: $beige-100;
+
+    // CONFIGURACIÓN DE TRAMA DE FONDO
+    position: relative;
+    overflow: hidden;
+    // Evita que la trama se salga si es muy grande
+
+    &::before {
+        content: '';
+        position: absolute;
+
+        // Centrado Vertical
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        width: 100%;
+        height: 100%;
+        // O la altura que tenga tu SVG si es una franja fija
+
+        background-image: url('../assets/images/bg-50-outline.svg');
+        background-repeat: repeat-x;
+        // Solo horizontal
+        background-position: -100px center;
+        // Centrado
+        background-size: auto;
+
+        z-index: 1;
+        // Nivel fondo
+        opacity: 0.6;
+        // Opcional: ajusta la opacidad si el outline es muy fuerte
+        pointer-events: none;
+    }
+
+    // Aseguramos que el título y contenido estén SOBRE la trama
+    .container,
+    .section-title,
+    .historias-swiper,
+    .historias-controls {
+        position: relative;
+        z-index: 2;
+    }
+
+    .section-title {
+        font-size: $fz-2xl;
+        font-weight: $fw-bold;
+        color: $neutral-900;
+        margin-bottom: $sp-xl;
+        text-align: left;
+    }
+
+    // CARRUSEL
+    .historias-swiper {
+        padding-bottom: 20px;
+
+        .swiper-slide {
+            height: auto;
+            display: flex;
+        }
+    }
+
+    // TARJETA DE TESTIMONIO
+    .story-card {
+        background-color: $beige-200;
+        // Fondo tarjeta beige-200
+        border-radius: $radius-lg;
+        padding: 40px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+
+        // Aseguramos que la tarjeta tenga fondo sólido sobre la trama
+        position: relative;
+        z-index: 2;
+
+        // Columna Izquierda: Foto
+        .story-img-col {
+            flex-shrink: 0;
+
+            .story-img {
+                width: 100px;
+                height: 100px;
+                border-radius: 12px;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        // Columna Derecha: Contenido
+        .story-content-col {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: left;
+
+            .story-meta {
+                margin-bottom: 10px;
+
+                .story-name {
+                    font-size: 20px;
+                    font-weight: $fw-bold;
+                    color: $neutral-900;
+                    margin-bottom: 4px;
+                    line-height: 1.2;
+                }
+
+                .story-bio {
+                    font-size: 14px;
+                    color: $neutral-900;
+                    opacity: 0.8;
+                    line-height: 1.4;
+                }
+            }
+
+            .story-body {
+                .story-excerpt {
+                    font-style: italic;
+                    font-size: 14px;
+                    color: $neutral-900;
+                    line-height: 1.5;
+                    margin-bottom: 30px;
+
+                    // Truncar a 3 líneas
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+
+                .btn-story-trigger {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    color: $brand-primary;
+                    font-weight: $fw-bold;
+                    font-size: 16px;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    text-align: left;
+                    font-family: inherit;
+
+                    &:hover {
+                        color: mix(black, $brand-primary, 10%);
+                    }
+                }
+            }
+        }
+    }
+
+    // CONTROLES NAVEGACIÓN
+    .historias-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding: 0 10px;
+
+        .swiper-pagination {
+            position: relative;
+            width: auto;
+            bottom: auto;
+            text-align: left;
+
+            .swiper-pagination-bullet {
+                width: 10px;
+                height: 10px;
+                background: $neutral-500;
+                opacity: 0.5;
+                margin: 0 6px 0 0;
+
+                &.swiper-pagination-bullet-active {
+                    background: $brand-primary;
+                    opacity: 1;
+                    width: 24px;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        .historias-nav-buttons {
+            display: flex;
+            gap: 12px;
+
+            button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                transition: transform 0.2s;
+
+                svg {
+                    width: 48px;
+                    height: 48px;
+                    display: block;
+                }
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+// =========================================
+// MODAL LIGHTBOX (Scroll General / Full Height)
+// =========================================
+.epysa-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+
+    // 1. ACTIVAMOS EL SCROLL EN EL CONTENEDOR PADRE
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // 2. CENTRADO FLEXIBLE
+    // Usamos align-items: flex-start para que si el modal es muy alto,
+    // empiece desde arriba y se pueda scrollear hacia abajo. 
+    // 'center' cortaría la parte superior en contenidos largos.
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    // Padding para que el modal no toque los bordes al scrollear
+    padding: 40px 20px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+
+    &.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    // Overlay (Fondo oscuro)
+    .epysa-modal-overlay {
+        position: fixed;
+        // Fijo para que no se mueva al scrollear
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: -1;
+        // Detrás del contenido
+    }
+
+    // Tarjeta del Modal
+    .epysa-modal-container {
+        position: relative;
+        background-color: $beige-100;
+        border-radius: $radius-lg;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        z-index: 10000;
+        overflow: hidden;
+
+        // 3. ALTURA AUTOMÁTICA (Crece con el contenido)
+        height: auto;
+
+        // 4. MARGEN AUTO para centrado vertical visual cuando sobra espacio
+        margin: auto;
+
+        // Anchos Responsivos
+        width: 90%;
+        max-width: 333px;
+
+        @include respond-to(mobile-xl) {
+            max-width: 536px;
+        }
+
+        @include respond-to(tablet) {
+            max-width: 714px;
+        }
+
+        @include respond-to(laptop) {
+            max-width: 750px;
+        }
+
+        // Botón Cerrar
+        .modal-close-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 20;
+
+            svg {
+                width: 32px;
+                height: 32px;
+
+                path {
+                    fill: $neutral-900;
+                }
+            }
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+
+        // Contenedor Interior
+        .modal-content-scroll {
+            display: flex;
+            flex-direction: column;
+            // Quitamos height: 100% fijo
+            height: auto;
+
+            // Padding superior para respetar el botón de cierre
+            padding: 80px 30px 40px 30px;
+        }
+
+        .modal-video-wrapper {
+            width: 100%;
+            margin-bottom: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: black;
+            flex-shrink: 0;
+
+            video {
+                width: 100%;
+                display: block;
+                // En laptops mantenemos una altura controlada pero flexible
+                max-height: 350px;
+            }
+        }
+
+        .modal-info {
+            margin-bottom: 20px;
+            flex-shrink: 0;
+
+            .modal-name {
+                font-size: 24px;
+                font-weight: $fw-bold;
+                color: $neutral-900;
+                margin-bottom: 4px;
+            }
+
+            .modal-bio {
+                font-size: 16px;
+                color: $neutral-500;
+            }
+        }
+
+        // Texto Normal (Sin scroll interno)
+        .modal-text-body {
+            font-size: 16px;
+            line-height: 1.6;
+            color: $neutral-900;
+            margin-bottom: 30px;
+
+            // 5. ELIMINAMOS RESTRICCIONES DE ALTURA
+            max-height: none;
+            overflow: visible;
+        }
+
+        .modal-footer {
+            text-align: center;
+            border-top: none;
+            padding-top: 0;
+
+            .link-back {
+                background: none;
+                border: none;
+                color: $neutral-900;
+                text-decoration: underline;
+                cursor: pointer;
+                font-size: 16px;
+                font-family: inherit;
+
+                &:hover {
+                    color: $brand-primary;
+                }
+            }
+        }
+    }
+}

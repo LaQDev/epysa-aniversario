@@ -1,0 +1,95 @@
+/* sass/_page.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* =========================================
+   PLANTILLA POR DEFECTO (Términos, Políticas)
+   ========================================= */
+.default-page-template {
+    /* Reemplazamos los pixeles fijos por tus variables de espaciado */
+    padding: $sp-lg 0;
+    background-color: $beige-100;
+    min-height: 70vh;
+
+    @include respond-to(laptop) {
+        padding: $sp-xxl 0;
+        /* Mismo padding top/bottom que usamos en el home */
+    }
+
+    .page-header {
+        /* SOLUCIÓN: Usamos padding-top en lugar de margin-top para mantener el color de fondo intacto */
+        padding-top: $sp-lg;
+        margin-bottom: $sp-lg;
+
+        @include respond-to(laptop) {
+            padding-top: $sp-xxl;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: $fw-bold;
+            color: $neutral-900;
+            margin: 0;
+
+            @include respond-to(laptop) {
+                font-size: 40px;
+            }
+        }
+    }
+
+    /* Estilos para el texto que viene del editor de WP */
+    .page-content {
+        max-width: 900px;
+        margin: 0 auto;
+        color: $neutral-900;
+        font-family: $font-primary;
+        font-size: 16px;
+        line-height: 1.8;
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        h2,
+        h3,
+        h4 {
+            color: $rojo-600;
+            font-weight: $fw-bold;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+
+            li {
+                margin-bottom: 10px;
+            }
+        }
+
+        a {
+            color: $rojo-600;
+            text-decoration: underline;
+            font-weight: $fw-semibold;
+
+            &:hover {
+                color: darken($rojo-600, 10%);
+            }
+        }
+
+        strong,
+        b {
+            font-weight: $fw-bold;
+        }
+    }
+}

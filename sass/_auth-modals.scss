@@ -1,0 +1,289 @@
+/* sass/_auth-modals.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.auth-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+.auth-modal-container {
+    background-color: $beige-200;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 30px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+    /* 1. BOTÓN CERRAR (32x32px) */
+    .auth-close-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        /* Ajustado */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 32px;
+            height: 32px;
+        }
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    /* Vistas */
+    .auth-view {
+        display: none;
+
+        &.active {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+    }
+
+    /* Icono */
+    .auth-icon {
+        margin-bottom: 20px;
+
+        img {
+            height: 64px;
+            width: auto;
+        }
+    }
+
+    /* Textos Generales */
+    .auth-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: $neutral-900;
+        margin-bottom: 10px;
+    }
+
+    .auth-desc {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        color: $neutral-900;
+        line-height: 1.5;
+        margin-bottom: 25px;
+    }
+
+    /* 3. MENSAJE SPAM (Italic, 12px, Neutral-950) */
+    .auth-hint-small {
+        font-family: 'Poppins', sans-serif;
+        font-size: 12px;
+        font-style: italic;
+        color: $neutral-950;
+        margin-bottom: 20px;
+    }
+
+    /* Inputs (Fuente Poppins) */
+    .auth-input {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid $neutral-400;
+        font-family: $font-primary; /* Variable */
+        font-size: 16px;
+        color: $neutral-900;
+        margin-bottom: 10px;
+
+        &:focus {
+            outline: none;
+            border-color: $rojo-600;
+        }
+
+        &.mb-2 {
+            margin-bottom: 10px;
+        }
+
+        /* --- NUEVO GAP: 40px usando variable --- */
+        &.mb-lg {
+            margin-bottom: $sp-lg; 
+        }
+
+        &::placeholder {
+            color: $neutral-400;
+        }
+    }
+
+    /* 2.3 MENSAJE DE ERROR / VALIDACIÓN */
+    .auth-error-msg {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        /* Regular */
+        color: $rojo-600;
+        margin-bottom: 15px;
+        text-align: left;
+        min-height: 20px;
+        display: none;
+        /* Se muestra con JS */
+
+        &.visible {
+            display: block;
+        }
+    }
+
+    /* --- CHECKBOX DE TÉRMINOS Y CONDICIONES --- */
+    .terms-checkbox-wrapper {
+        display: flex;
+        align-items: flex-start;
+        text-align: left;
+        margin-bottom: $sp-lg; /* Variable Gap 40px hacia el botón */
+        gap: 10px;
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
+            accent-color: $brand-primary; /* Le da el tono rojo de la marca al hacer check */
+        }
+
+        label {
+            font-family: $font-primary;
+            font-size: $fz-sm; /* 14px */
+            color: $neutral-950; /* #111111 */
+            cursor: pointer;
+            line-height: $lh-base;
+            margin: 0;
+
+            a {
+                color: $neutral-950;
+                font-weight: $fw-bold;
+                text-decoration: none;
+                transition: color 0.2s ease;
+
+                &:hover {
+                    text-decoration: underline;
+                    color: $brand-primary; /* Hover en rojo */
+                }
+            }
+        }
+    }
+
+    /* Botones Principales */
+    .auth-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 50px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        background-color: $rojo-600;
+        color: white;
+        transition: background 0.2s;
+
+        &:hover {
+            background-color: darken($rojo-600, 5%);
+        }
+
+        &:disabled {
+            background-color: $neutral-400;
+            cursor: not-allowed;
+        }
+    }
+
+    /* 2.4 BOTÓN VOLVER (Neutral-950) */
+    .btn-text-back {
+        background: none;
+        border: none;
+        text-decoration: underline;
+        color: $neutral-950;
+        /* Ajustado */
+        font-family: 'Poppins', sans-serif;
+        margin-top: 15px;
+        cursor: pointer;
+        font-size: 14px;
+
+        &:hover {
+            color: $rojo-600;
+        }
+    }
+
+    /* Botones Lado a Lado */
+    .auth-actions-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+
+        .auth-btn-half {
+            flex: 1;
+            padding: 12px;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+
+            &.btn-outline {
+                border: 1px solid $neutral-900;
+                color: $neutral-900;
+
+                &:hover {
+                    background: $neutral-100;
+                }
+            }
+
+            &.btn-primary {
+                background: $rojo-600;
+                color: white;
+                border: none;
+
+                &:hover {
+                    background: darken($rojo-600, 5%);
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

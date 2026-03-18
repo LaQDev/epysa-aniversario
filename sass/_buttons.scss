@@ -1,0 +1,161 @@
+/* sass/_buttons.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* =========================================
+   1. ESTILO BASE (.btn) - Tamaño Normal (MD)
+   ========================================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    /* Espaciado estándar para iconos */
+
+    /* Tipografía */
+    font-family: $font-primary;
+    font-weight: $fw-bold;
+    /* 700 */
+    font-size: $fz-base;
+    /* 16px */
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+
+    /* Espaciado Normal (MD) solicitado */
+    padding: 8px 24px;
+    border-radius: 50px;
+    /* Forma de píldora (Pill) */
+    border: 2px solid transparent;
+
+    /* Comportamiento */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+
+    /* Control de iconos automáticos */
+    svg,
+    img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    /* Modificador: Icono a la derecha */
+    &.icon-right {
+        flex-direction: row-reverse;
+    }
+
+    /* Accesibilidad */
+    &:focus {
+        box-shadow: 0 0 0 3px rgba($rojo-600, 0.3);
+    }
+
+    &:disabled,
+    &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+
+/* =========================================
+   2. MODIFICADORES DE TAMAÑO (Sizes)
+   ========================================= */
+
+/* Botón Pequeño (SM) */
+.btn-sm {
+    padding: 6px 16px;
+    font-size: 14px;
+}
+
+/* Botón Grande (LG) - Para Hero y CTAs principales */
+.btn-lg {
+    padding: 14px 32px;
+    font-size: 18px;
+}
+
+/* =========================================
+   3. VARIANTES DE COLOR Y ESTILO
+   ========================================= */
+
+/* A. PRIMARIO (Filled Rojo - Texto Blanco) */
+.btn-primary {
+    background-color: $rojo-600;
+    color: $neutral-0;
+    border-color: $rojo-600;
+
+    &:hover {
+        background-color: darken($rojo-600, 8%);
+        border-color: darken($rojo-600, 8%);
+        transform: translateY(-2px);
+        color: $neutral-0;
+    }
+}
+
+/* B. OUTLINE PRIMARIO (Borde Rojo - Texto Rojo) */
+.btn-outline-primary {
+    background-color: transparent;
+    color: $rojo-600;
+    border-color: $rojo-600;
+
+    &:hover {
+        background-color: $rojo-600;
+        color: $neutral-0;
+        transform: translateY(-2px);
+    }
+}
+
+/* C. INVERSO (Filled Blanco - Usado en Headers) */
+.btn-inverse {
+    background-color: $neutral-0;
+    color: $neutral-900;
+    border-color: $neutral-0;
+
+    &:hover {
+        background-color: $neutral-100;
+        color: $rojo-600;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* D. OUTLINE BLANCO (Usado en el Hero) */
+.btn-outline-white {
+    background-color: transparent;
+    color: $neutral-0;
+    border-color: $neutral-0;
+
+    &:hover {
+        background-color: $neutral-0;
+        color: $rojo-600;
+        transform: translateY(-2px);
+    }
+}
+
+/* E. NEUTRO (Filled Gris - Usado para "Ya votado") */
+.btn-neutral {
+    background-color: $gris-900;
+    color: $neutral-0;
+    border-color: $gris-900;
+
+    &:hover {
+        background-color: lighten($gris-900, 10%);
+        transform: translateY(-2px);
+    }
+}
+
+/* F. TEXT LINK (Apariencia de enlace, comportamiento de botón) */
+.btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: $rojo-600;
+    text-decoration: underline;
+
+    &:hover {
+        color: darken($rojo-600, 10%);
+        transform: none;
+    }
+}

@@ -1,0 +1,51 @@
+/* main.scss */
+
+/* 1. SISTEMA DE DISEÑO */
+/* "as *" significa: Carga las variables y quítales el namespace */
+@use 'variables' as *; 
+@use 'mixins' as *;
+@use 'page';    
+@use 'layout';
+@use 'header';
+@use 'footer';
+@use 'buttons';
+@use 'home';
+@use 'participa';
+@use 'confirmacion';
+@use 'galeria';
+@use 'modal';
+@use 'auth-modals';
+@use 'votacion';
+@use 'perfil';
+@use 'etapa3';
+
+/* 2. ESTILOS GLOBALES */
+/* Reset Básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* Ahora sí va a encontrar esta variable porque usamos "as *" arriba */
+    background-color: $color-fondo-body; 
+    color: $color-texto-principal;
+    font-family: $font-primary;
+    font-weight: $fw-regular;
+    font-size: $fz-base;
+    line-height: $lh-base;
+    -webkit-font-smoothing: antialiased; // Hace que la fuente se vea nítida en Mac
+}
+
+// Configuración base de Títulos
+h1, h2, h3, h4, h5, h6 {
+    font-weight: $fw-bold;
+    line-height: $lh-tight;
+    margin-bottom: $sp-md; // Espacio definido en variables
+    color: $brand-primary; // Por defecto los títulos en Rojo Epysa (según vi en los PDFs)
+}
+
+h1 { font-size: $fz-3xl; }
+h2 { font-size: $fz-2xl; }
+h3 { font-size: $fz-xl; }

@@ -1,0 +1,335 @@
+/* sass/_modal.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* =========================================
+   ESTRUCTURA BASE MODAL
+   ========================================= */
+.epysa-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+
+    /* Scroll en el padre */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+
+    &.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Overlay Fondo */
+    .epysa-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        z-index: -1;
+    }
+
+    /* Contenedor de la Tarjeta */
+    .epysa-modal-container {
+        position: relative;
+        background-color: $beige-100;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        overflow: hidden;
+
+        width: 100%;
+        height: auto;
+        margin: auto;
+        max-width: 950px;
+    }
+}
+
+/* =========================================
+   DISEÑO ESPECÍFICO GALERÍA
+   ========================================= */
+.gallery-modal-layout {
+    display: flex;
+
+    /* 1. COMPORTAMIENTO MÓVIL (Base): Apilado */
+    flex-direction: column;
+    min-height: auto;
+
+    /* 2. COMPORTAMIENTO DESKTOP/TABLET (min-width): Lado a lado */
+    @include respond-to(tablet) {
+        flex-direction: row;
+        min-height: 550px;
+        /* Altura sugerida para desktop */
+    }
+
+    /* --- BOTÓN CERRAR --- */
+    .modal-close-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 50;
+        background: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        img,
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    /* --- COLUMNA 1: MULTIMEDIA (Carrusel) --- */
+    .modal-col-media {
+        /* ESTILO MÓVIL: Ancho total, altura fija */
+        width: 100%;
+        height: 300px;
+        /* Altura del video/foto en celular */
+        background-color: #000;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+        /* Evita que se aplaste */
+
+        /* ESTILO DESKTOP: Mitad del ancho, altura automática */
+        @include respond-to(tablet) {
+            width: 50%;
+            /* O flex: 1 */
+            height: auto;
+            /* Llena el alto del contenedor */
+            flex: 1;
+        }
+
+        /* SWIPER */
+        .swiper {
+            width: 100%;
+            height: 100%;
+
+            .swiper-slide {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #000;
+
+                .media-wrapper {
+                    width: 100%;
+                    height: 100%;
+
+                    img,
+                    video {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                        /* Ajuste correcto */
+                        display: block;
+                    }
+                }
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                color: white;
+
+                &::after {
+                    font-size: 22px;
+                    font-weight: bold;
+                    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            .swiper-pagination-bullet {
+                background: white;
+                opacity: 0.6;
+            }
+
+            .swiper-pagination-bullet-active {
+                background: $rojo-600;
+                opacity: 1;
+            }
+        }
+    }
+
+    /* --- COLUMNA 2: CONTENIDO --- */
+    .modal-col-content {
+        /* ESTILO MÓVIL: Ancho total */
+        width: 100%;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: $beige-100;
+
+        /* ESTILO DESKTOP: Mitad del ancho */
+        @include respond-to(tablet) {
+            flex: 1;
+            padding: 50px 40px;
+        }
+
+        /* Badge */
+        .modal-badge {
+            margin-bottom: 20px;
+
+            .pill-valor {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 16px;
+                border-radius: 50px;
+                font-size: 13px;
+                font-weight: 700;
+                background: #FFFFFF;
+                border: 1px solid currentColor;
+                text-transform: capitalize;
+
+                &.val-pasion {
+                    color: $rojo-600;
+                }
+
+                &.val-amistad {
+                    color: $amarillo-400;
+                }
+
+                &.val-entereza {
+                    color: $verde-500;
+                }
+
+                &.val-innovacion {
+                    color: $azul-800;
+                }
+
+                &.val-seguridad {
+                    color: $gris-800;
+                }
+
+                img {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
+        /* Textos */
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: $fw-bold;
+            color: $neutral-900;
+            margin-bottom: 10px;
+            line-height: 1.2;
+
+            @include respond-to(mobile) {
+                font-size: 24px;
+            }
+        }
+
+        .modal-author-block {
+            margin-bottom: 25px;
+
+            .author-name {
+                font-size: 20px;
+                font-weight: $fw-bold;
+                margin: 0;
+                color: $neutral-900;
+            }
+
+            .author-tenure {
+                font-size: 14px;
+                color: $neutral-500;
+                margin: 0;
+            }
+        }
+
+        .modal-body-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: $neutral-900;
+            margin-bottom: 40px;
+        }
+
+        /* Botones de Acción */
+        .modal-actions {
+            margin-top: auto;
+            width: 100%;
+            display: flex;
+
+            /* MÓVIL: Botones apilados (Votar arriba, Volver abajo) */
+            flex-direction: column-reverse;
+            gap: 15px;
+            align-items: center;
+
+            /* DESKTOP: Botones en fila */
+            @include respond-to(tablet) {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 20px;
+            }
+
+            .btn-votar-modal {
+                width: 100%;
+                background-color: $rojo-600;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 50px;
+                font-size: 16px;
+                font-weight: $fw-bold;
+                cursor: pointer;
+                transition: transform 0.2s;
+                text-align: center;
+
+                &:hover {
+                    background-color: darken($rojo-600, 5%);
+                    transform: translateY(-2px);
+                }
+
+                @include respond-to(tablet) {
+                    flex: 1;
+                }
+            }
+
+            .btn-link-back {
+                background: none;
+                border: none;
+                color: $neutral-500;
+                text-decoration: underline;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: $fw-bold;
+                font-family: $font-primary;
+
+                &:hover {
+                    color: $rojo-600;
+                }
+            }
+        }
+    }
+}

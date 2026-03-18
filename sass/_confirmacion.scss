@@ -1,0 +1,115 @@
+/* sass/_confirmacion.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.page-confirmacion {
+    /* 1. FONDO GRADIENTE (Adaptado a variables SASS) */
+    background: linear-gradient(284deg, $beige-300 0.04%, $beige-100 99.96%);
+
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 60px 0;
+
+    /* Configuración para la trama de fondo */
+    position: relative;
+    overflow: hidden;
+    /* Importante para cortar la trama superior e inferiormente */
+
+    /* 2. TRAMA VERTICAL DERECHA */
+    &::before {
+        content: '';
+        position: absolute;
+
+        /* Posición: A la derecha con 3% de margen */
+        right: 3%;
+
+        /* Altura: "Corta levemente" arriba y sigue hasta abajo */
+        top: -10px;
+        bottom: -40px;
+
+        /* Ancho de la franja vertical (ajústalo si el SVG es muy ancho/angosto) */
+        width: 100px;
+
+        background-image: url('../assets/images/bg-50-vertical-white-outline.svg');
+        background-repeat: repeat-y;
+        /* Repetición Vertical */
+        background-position: center top;
+        /* Alineado arriba */
+        background-size: 100% auto;
+        /* Ancho ajustado al contenedor, alto automático */
+
+        z-index: 0;
+        /* Nivel fondo */
+        opacity: 0.6;
+        /* Opacidad sutil para trama blanca */
+        pointer-events: none;
+    }
+
+    /* Contenido */
+    .success-content {
+        /* Aseguramos que el contenido flote SOBRE la trama */
+        position: relative;
+        z-index: 2;
+
+        width: 100%;
+
+        /* ÍCONO */
+        .icon-wrapper {
+            margin-bottom: 40px;
+
+            img {
+                width: 90px;
+                height: 90px;
+                object-fit: contain;
+            }
+        }
+
+        /* TÍTULO */
+        .success-title {
+            font-size: 36px;
+            font-weight: $fw-bold;
+            color: $neutral-900;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        /* TEXTO */
+        .success-text {
+            font-size: 16px;
+            color: $neutral-900;
+            line-height: 1.6;
+            margin-bottom: 40px;
+
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+
+            p {
+                margin: 0;
+            }
+        }
+
+        /* BOTÓN OUTLINE ROJO */
+        .action-wrapper {
+            .btn-outline-red {
+                display: inline-block;
+                padding: 12px 40px;
+                background-color: transparent;
+                border: 1px solid $rojo-600;
+                color: $rojo-600;
+                font-weight: $fw-bold;
+                border-radius: 50px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                font-family: inherit;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $rojo-600;
+                    color: $neutral-0;
+                }
+            }
+        }
+    }
+}

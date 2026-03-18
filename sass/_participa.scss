@@ -1,0 +1,582 @@
+/* sass/_participa.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.page-participa {
+    background-color: $beige-100;
+    min-height: 100vh;
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    /* --- TRAMA DE FONDO GLOBAL --- */
+    position: relative;
+    /* overflow-x: hidden es vital para que la trama no genere scroll horizontal si es muy ancha */
+    overflow-x: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        background-image: url('../assets/images/bg-50-big-outline.svg');
+        background-repeat: no-repeat;
+
+        /* Ajuste: 'cover' asegura que llene todo el fondo, o puedes usar '100% auto' si quieres ver el ancho completo */
+        background-size: cover;
+        background-position: center top;
+
+        /* Opacidad y Nivel */
+        opacity: 0.6;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Aseguramos que TODO el contenido flote sobre la trama */
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-container {
+        width: 100%;
+    }
+
+    .form-header {
+        text-align: left;
+
+        .page-title {
+            font-size: 32px;
+            font-weight: $fw-bold;
+            color: $neutral-900;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .form-instruction {
+            font-size: 16px;
+            color: $neutral-900;
+        }
+    }
+
+    /* GRILLA DE FORMULARIO */
+    .form-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            position: relative;
+
+            /* Label y Asterisco */
+            .form-label {
+                font-weight: $fw-regular;
+                font-size: 14px;
+                color: $neutral-900;
+                margin-bottom: 8px;
+
+                .asterisk {
+                    color: $rojo-600;
+                    margin-left: 2px;
+                }
+            }
+
+            /* Inputs (Estilos normales) */
+            .form-control,
+            .form-select {
+                background-color: $neutral-0;
+                border: 1px solid $neutral-400;
+                border-radius: 10px;
+                padding: 15px 20px;
+                font-size: 16px;
+                color: $neutral-900;
+                font-family: inherit;
+                box-shadow: none;
+
+                &::placeholder {
+                    color: #BBB;
+                }
+
+                &:focus {
+                    outline: none;
+                    border-color: $brand-primary;
+                }
+            }
+
+            /* --- MENSAJES DE ERROR --- */
+            .form-hint {
+                display: none;
+                color: $rojo-600;
+                font-size: 12px;
+                font-weight: $fw-regular;
+                margin-top: 8px;
+                line-height: 1.2;
+            }
+
+            /* --- ESTADO DE ERROR ACTIVO --- */
+            &.has-error {
+                .form-hint {
+                    display: block;
+                }
+
+                .form-control,
+                .form-select,
+                .file-upload-box {
+                    border: 1px solid $rojo-600;
+                }
+
+                .custom-check-input {
+                    border-color: $rojo-600;
+                }
+            }
+        }
+
+        .half-width {
+            @include respond-to(tablet) {
+                width: calc(50% - 10px);
+            }
+        }
+
+        .full-width {
+            width: 100%;
+        }
+    }
+
+    .char-count {
+        font-size: 12px;
+        color: $neutral-500;
+        margin-top: 5px;
+    }
+
+    /* Pills de Valores (Radio Buttons) */
+    .valores-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        /* Estilo Base del Botón */
+        .btn-pill-valor {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 9px;
+            gap: 6px;
+            border: 1px solid transparent;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            font-family: inherit;
+            text-transform: none;
+            background-color: $neutral-0;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+
+            /* Ícono SVG */
+            .pill-icon {
+                display: flex;
+                align-items: center;
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                    fill: none;
+                    stroke: currentColor;
+                    stroke-width: 2px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+
+                    path,
+                    circle,
+                    rect,
+                    line,
+                    polyline {
+                        stroke: currentColor;
+                    }
+
+                    transition: stroke 0.2s ease-in-out;
+                }
+            }
+
+            /* --- VARIANTES DE COLOR --- */
+            &.val-pasion {
+                color: $rojo-600;
+                border-color: $rojo-600;
+
+                &:hover {
+                    background-color: $rojo-200;
+                }
+            }
+
+            &.val-amistad {
+                color: $amarillo-400;
+                border-color: $amarillo-400;
+
+                &:hover {
+                    background-color: $amarillo-100;
+                }
+            }
+
+            &.val-entereza {
+                color: $verde-500;
+                border-color: $verde-500;
+
+                &:hover {
+                    background-color: $verde-200;
+                }
+            }
+
+            &.val-innovacion {
+                color: $azul-800;
+                border-color: $azul-800;
+
+                &:hover {
+                    background-color: $azul-200;
+                }
+            }
+
+            &.val-seguridad {
+                color: $gris-800;
+                border-color: $gris-800;
+
+                &:hover {
+                    background-color: $gris-200;
+                }
+            }
+        }
+
+        /* --- ESTADOS SELECCIONADOS (CHECKED) --- */
+        .btn-check:checked+.val-pasion {
+            background-color: $rojo-600;
+            color: $neutral-0;
+            border-color: $rojo-600;
+        }
+
+        .btn-check:checked+.val-amistad {
+            background-color: $amarillo-400;
+            color: $neutral-0;
+            border-color: $amarillo-400;
+        }
+
+        .btn-check:checked+.val-entereza {
+            background-color: $verde-600;
+            color: $neutral-0;
+            border-color: $verde-600;
+        }
+
+        .btn-check:checked+.val-innovacion {
+            background-color: $azul-600;
+            color: $neutral-0;
+            border-color: $azul-600;
+        }
+
+        .btn-check:checked+.val-seguridad {
+            background-color: $gris-600;
+            color: $neutral-0;
+            border-color: $gris-600;
+        }
+
+        .btn-check {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    /* File Upload */
+    .file-upload-box {
+        position: relative;
+        background-color: $neutral-0;
+        border: 1px dashed #CCC;
+        border-radius: 10px;
+        padding: 40px 20px;
+        text-align: center;
+        transition: border-color 0.3s;
+        cursor: pointer;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &:hover,
+        &.drag-over {
+            border-color: $brand-primary;
+            background-color: rgba($brand-primary, 0.02);
+        }
+
+        input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Contenedor de la Galería */
+        .preview-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 20px;
+            z-index: 20;
+            pointer-events: none;
+
+            &:empty {
+                display: none;
+            }
+        }
+
+        /* Tarjeta de Archivo Individual */
+        .file-card {
+            position: relative;
+            width: 100px;
+            pointer-events: auto;
+
+            @include respond-to(mobile-xl) {
+                width: 140px;
+            }
+
+            .thumb-wrapper {
+                width: 100%;
+                height: 100px;
+                border-radius: 12px;
+                overflow: hidden;
+                position: relative;
+                background-color: #000;
+                margin-bottom: 8px;
+
+                @include respond-to(mobile-xl) {
+                    height: 140px;
+                }
+
+                img,
+                video {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: filter 0.3s ease;
+                }
+
+                &.is-loading {
+
+                    img,
+                    video {
+                        filter: blur(4px);
+                        opacity: 0.8;
+                    }
+                }
+            }
+
+            .progress-container {
+                position: absolute;
+                bottom: 20px;
+                left: 10%;
+                width: 80%;
+                height: 6px;
+                background-color: rgba(255, 255, 255, 0.5);
+                border-radius: 4px;
+                overflow: hidden;
+                z-index: 5;
+                display: none;
+
+                .progress-bar {
+                    width: 0%;
+                    height: 100%;
+                    background-color: $verde-500;
+                    transition: width 0.3s ease;
+                }
+            }
+
+            .btn-delete {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 28px;
+                height: 28px;
+                background-color: $rojo-600;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border: none;
+                z-index: 10;
+                transition: transform 0.2s;
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+
+                img {
+                    width: 14px;
+                    height: 14px;
+                    filter: brightness(0) invert(1);
+                }
+            }
+
+            .file-name {
+                font-size: 12px;
+                color: $neutral-900;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+            }
+        }
+
+        .upload-ui-content {
+            z-index: 1;
+            pointer-events: none;
+
+            p {
+                margin: 0;
+                font-size: 14px;
+                color: $neutral-900;
+            }
+
+            .btn-fake-black {
+                background-color: $neutral-900;
+                color: $neutral-0;
+                padding: 10px 24px;
+                border-radius: 50px;
+                font-size: 14px;
+                display: inline-block;
+                margin: 15px 0;
+                font-weight: $fw-medium;
+            }
+
+            .file-meta {
+                font-size: 12px;
+                color: $neutral-500;
+                margin-top: 20px;
+            }
+        }
+    }
+
+    /* Checkbox Legal */
+    .custom-check-wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+
+        .custom-check-input {
+            appearance: none;
+            -webkit-appearance: none;
+            flex-shrink: 0;
+            width: 25px;
+            height: 25px;
+            border: 1px solid $neutral-400;
+            background-color: $neutral-0;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            margin-top: 2px;
+
+            &:checked {
+                background-color: $brand-primary;
+                border-color: $brand-primary;
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+            }
+        }
+
+        .custom-check-label {
+            font-size: 14px;
+            color: $neutral-900;
+            line-height: 1.5;
+            cursor: pointer;
+
+            a {
+                color: $neutral-900;
+                text-decoration: underline;
+                font-weight: $fw-bold;
+            }
+        }
+    }
+
+    /* Sección Premio */
+    .participa-prize-card {
+        background-color: $beige-200;
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column-reverse;
+
+        @include respond-to(laptop) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .prize-info {
+            padding: 30px;
+            flex: 1;
+
+            .prize-icon {
+                margin-bottom: 15px;
+
+                img {
+                    height: 60px;
+                    width: auto;
+                }
+            }
+
+            .prize-title {
+                font-size: 20px;
+                font-weight: $fw-bold;
+                color: $neutral-900;
+                margin-bottom: 10px;
+                line-height: 1.2;
+            }
+
+            .prize-desc {
+                font-size: 14px;
+                color: $neutral-900;
+                line-height: 1.5;
+            }
+        }
+
+        .prize-image-wrapper {
+            width: 100%;
+            height: 200px;
+
+            @include respond-to(laptop) {
+                width: 45%;
+                height: 100%;
+                min-height: 250px;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+    }
+
+    /* Footer (si aplica dentro de esta página) */
+    .form-footer {
+        .brand-footer {
+            font-weight: bold;
+            color: $neutral-900;
+            letter-spacing: 1px;
+        }
+
+        .legal-link {
+            font-size: 12px;
+            color: $neutral-500;
+            text-decoration: underline;
+        }
+    }
+}

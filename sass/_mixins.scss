@@ -1,0 +1,23 @@
+/* _mixins.scss */
+@use 'variables' as *;
+
+/* Mixin para Media Queries
+   Uso: @include respond-to(tablet) { ...estilos... } 
+*/
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == mobile-xl {
+        @media (min-width: $bp-mobile-xl) { @content; }
+    }
+    @else if $breakpoint == tablet {
+        @media (min-width: $bp-tablet) { @content; }
+    }
+    @else if $breakpoint == laptop {
+        @media (min-width: $bp-laptop) { @content; }
+    }
+    @else if $breakpoint == desktop {
+        @media (min-width: $bp-desktop) { @content; }
+    }
+    @else if $breakpoint == desktop-xl {
+        @media (min-width: $bp-desktop-xl) { @content; }
+    }
+}

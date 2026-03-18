@@ -1,0 +1,341 @@
+/* sass/_layout.scss - VERSIÓN DEFINITIVA CON GRILLA COMPLETA */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* =========================================
+   1. CONFIGURACIÓN GLOBAL & RESET
+   ========================================= */
+html {
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+    /* Evita scroll horizontal accidental */
+    margin: 0;
+}
+
+/* Asegurar que la barra de admin (si existe) esté siempre visualmente arriba */
+#wpadminbar {
+    z-index: 99999 !important;
+}
+
+/* =========================================
+   2. ESTRUCTURA PRINCIPAL (Main)
+   ========================================= */
+main#primary {
+    display: block;
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
+    min-height: 60vh;
+}
+
+/* =========================================
+   3. SISTEMA DE CONTENEDORES (Figma Breakpoints)
+   ========================================= */
+
+.container,
+.container-fluid {
+    width: 100%;
+    padding-right: calc($grid-gutter / 2); // 12px a cada lado
+    padding-left: calc($grid-gutter / 2);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container-fluid {
+    max-width: 100%;
+}
+
+.container {
+    /* Mobile First (Ancho 100%) */
+
+    /* Mobile XL (>= 576px) */
+    @include respond-to(mobile-xl) {
+        max-width: $cw-mobile-xl;
+    }
+
+    /* Tablet (>= 768px) */
+    @include respond-to(tablet) {
+        max-width: $cw-tablet;
+    }
+
+    /* Laptop (>= 1200px) */
+    @include respond-to(laptop) {
+        max-width: $cw-laptop;
+    }
+
+    /* Desktop (>= 1400px) */
+    @include respond-to(desktop) {
+        max-width: $cw-desktop;
+    }
+}
+
+/* =========================================
+   4. SISTEMA DE FILAS (Grid Row)
+   ========================================= */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: calc($grid-gutter / -2);
+    margin-left: calc($grid-gutter / -2);
+
+    /* Gutter X/Y clases utilitarias rápidas */
+    &.g-4 {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 1.5rem;
+        margin-top: calc(var(--bs-gutter-y) * -1);
+        margin-right: calc(var(--bs-gutter-x) / -2);
+        margin-left: calc(var(--bs-gutter-x) / -2);
+
+        >* {
+            padding-right: calc(var(--bs-gutter-x) / 2);
+            padding-left: calc(var(--bs-gutter-x) / 2);
+            margin-top: var(--bs-gutter-y);
+        }
+    }
+}
+
+/* =========================================
+   5. SISTEMA DE COLUMNAS (GENERADOR SASS)
+   ========================================= */
+
+/* Estilos base comunes para todas las columnas col-* */
+[class^="col-"],
+[class*=" col-"] {
+    position: relative;
+    width: 100%;
+    padding-right: calc($grid-gutter / 2);
+    padding-left: calc($grid-gutter / 2);
+}
+
+/* --- COLUMNAS BASE (Móvil / xs) --- */
+@for $i from 1 through 12 {
+    .col-#{$i} {
+        flex: 0 0 percentage($i / 12);
+        max-width: percentage($i / 12);
+    }
+}
+
+.col-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+
+.col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+/* --- COLUMNAS TABLET (md >= 768px) --- */
+@include respond-to(tablet) {
+    @for $i from 1 through 12 {
+        .col-md-#{$i} {
+            flex: 0 0 percentage($i / 12);
+            max-width: percentage($i / 12);
+        }
+    }
+
+    .col-md-auto {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+/* --- COLUMNAS LAPTOP (lg >= 1024px/1200px según tu mixin) --- */
+/* Aquí es donde se define col-lg-6 que te faltaba */
+@include respond-to(laptop) {
+    @for $i from 1 through 12 {
+        .col-lg-#{$i} {
+            flex: 0 0 percentage($i / 12);
+            max-width: percentage($i / 12);
+        }
+    }
+
+    .col-lg-auto {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+/* --- COLUMNAS DESKTOP (xl/desktop >= 1400px) --- */
+@include respond-to(desktop) {
+    @for $i from 1 through 12 {
+        .col-xl-#{$i} {
+            flex: 0 0 percentage($i / 12);
+            max-width: percentage($i / 12);
+        }
+    }
+}
+
+/* --- OFFSETS (Márgenes izquierdos) --- */
+@for $i from 0 through 11 {
+    .offset-#{$i} {
+        margin-left: percentage($i / 12);
+    }
+}
+
+@include respond-to(tablet) {
+    @for $i from 0 through 11 {
+        .offset-md-#{$i} {
+            margin-left: percentage($i / 12);
+        }
+    }
+}
+
+@include respond-to(laptop) {
+    @for $i from 0 through 11 {
+        .offset-lg-#{$i} {
+            margin-left: percentage($i / 12);
+        }
+    }
+}
+
+
+/* =========================================
+   6. UTILIDADES (Helpers)
+   ========================================= */
+
+/* Flexbox */
+.d-flex {
+    display: flex !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+}
+
+.flex-row {
+    flex-direction: row !important;
+}
+
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.justify-content-start {
+    justify-content: flex-start !important;
+}
+
+.justify-content-end {
+    justify-content: flex-end !important;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.justify-content-around {
+    justify-content: space-around !important;
+}
+
+.align-items-start {
+    align-items: flex-start !important;
+}
+
+.align-items-end {
+    align-items: flex-end !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.align-items-stretch {
+    align-items: stretch !important;
+}
+
+/* Texto */
+.text-center {
+    text-align: center !important;
+}
+
+.text-start {
+    text-align: left !important;
+}
+
+.text-end {
+    text-align: right !important;
+}
+
+/* Tamaños */
+.w-100 {
+    width: 100% !important;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+/* Espaciados (Márgenes bottom) */
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.mb-1 {
+    margin-bottom: 0.25rem !important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mb-5 {
+    margin-bottom: 3rem !important;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.mt-auto {
+    margin-top: auto !important;
+}
+
+/* Padding Y (Vertical) */
+.py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}

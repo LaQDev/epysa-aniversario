@@ -1,0 +1,109 @@
+/* sass/_footer.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.site-footer {
+    background-color: $gris-900; // CAMBIO: Color específico solicitado (#404040)
+    color: $neutral-0; // Texto blanco
+    padding: $sp-xl 0; // 32px vertical
+    margin-top: auto;
+
+    .footer-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center; // Centrado en móvil
+        gap: $sp-lg;
+        text-align: center;
+    }
+
+    /* --- BLOQUE IZQUIERDO: Branding --- */
+    .footer-branding {
+        display: flex;
+        flex-direction: column;
+        align-items: center; // Centrado en móvil
+        gap: $sp-md; // Espacio entre logo y redes
+
+        /* Logo Epysa */
+        .logo-link {
+            display: block;
+            line-height: 0;
+
+            img {
+                max-width: 140px;
+                height: auto;
+            }
+        }
+
+        /* Redes Sociales */
+        .social-links {
+            display: flex;
+            gap: $sp-md;
+
+            a {
+                color: $neutral-0; // Blanco por defecto
+                display: flex;
+                align-items: center;
+                transition: transform 0.2s, color 0.2s;
+
+                svg {
+                    width: 24px;
+                    height: 24px;
+                    /* Forzamos al SVG a usar el color del texto */
+                    fill: currentColor;
+
+                    /* TRUCO MAESTRO:
+                       Obligamos a las partes internas (path, circle, rect) 
+                       a heredar el color, ignorando su propio relleno. */
+                    * {
+                        fill: currentColor !important;
+                    }
+                }
+
+                &:hover {
+                    color: $brand-primary; // Al cambiar esto a rojo...
+                    transform: translateY(-2px);
+                    // ...el SVG y sus paths ahora sí cambiarán a rojo.
+                }
+            }
+        }
+    }
+
+    /* --- BLOQUE DERECHO: Navegación --- */
+    .footer-info {
+        .footer-navigation ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li a {
+                color: $neutral-0; // Blanco
+                font-family: $font-primary;
+                font-weight: $fw-medium;
+                font-size: $fz-sm; // Texto pequeño (14px)
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    /* =========================================
+       DESKTOP (Laptop >= 1200px)
+       ========================================= */
+    @include respond-to(laptop) {
+        padding: $sp-lg 0; // Ajuste vertical
+
+        .footer-inner {
+            flex-direction: row; // Lado a lado
+            justify-content: space-between; // Separados al máximo
+            align-items: center; // Alineación vertical centrada (Logo vs Texto)
+            text-align: left;
+        }
+
+        .footer-branding {
+            align-items: flex-start; // Alineado a la izquierda
+        }
+    }
+}

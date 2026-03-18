@@ -1,0 +1,382 @@
+/* sass/_header.scss */
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* =========================================
+   ESTILOS GENERALES DEL HEADER
+   ========================================= */
+.site-header {
+    background-color: $brand-primary; // Fondo Rojo
+    padding: $sp-md 0;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1000;
+
+    .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+    }
+}
+
+/* =========================================
+   1. LOGOTIPO
+   ========================================= */
+.site-branding {
+    display: flex;
+    align-items: center;
+    z-index: 1001;
+    max-width: 140px;
+
+    a {
+        display: block;
+        line-height: 0;
+    }
+
+    img {
+        width: auto;
+        height: auto;
+        max-height: 40px;
+        object-fit: contain;
+    }
+
+    @include respond-to(laptop) {
+        max-width: 180px;
+
+        img {
+            max-height: 50px;
+        }
+    }
+}
+
+/* =========================================
+   2. NAVEGACIÓN (Mobile First)
+   ========================================= */
+.main-navigation {
+
+    /* --- HAMBURGUESA --- */
+    .menu-toggle {
+        display: block;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: $sp-xs;
+        z-index: 1001;
+        outline: none;
+
+        .bar {
+            display: block;
+            width: 24px;
+            height: 2px;
+            margin: 6px auto;
+            background-color: $text-inverse;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &[aria-expanded="true"] {
+            .bar {
+                background-color: $text-inverse;
+            }
+
+            .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
+    }
+
+    /* --- MENÚ DESPLEGABLE (Móvil) --- */
+    .menu-wrapper {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: $neutral-0;
+        padding: $sp-lg $sp-md;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                margin-bottom: $sp-xs;
+                text-align: center;
+
+                a {
+                    display: block;
+                    padding: $sp-sm;
+                    font-size: $fz-md;
+                    font-weight: $fw-medium;
+                    color: $text-primary;
+                    text-decoration: none;
+
+                    &:hover {
+                        /* AJUSTE: Solo subrayado en móvil */
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        /* CTA MÓVIL */
+        .header-cta {
+            margin-top: $sp-lg;
+            padding-top: $sp-md;
+            border-top: 1px solid $neutral-200;
+            text-align: center;
+
+            .btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                color: $neutral-900 !important;
+                gap: 10px;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+
+            /* Dropdown en móvil simplificado */
+            .user-dropdown-wrapper {
+                .user-dropdown-menu {
+                    display: block;
+                    margin-top: 15px;
+                    border-top: 1px solid $neutral-200;
+                    padding-top: 15px;
+
+                    .link-profile {
+                        display: block;
+                        color: $neutral-900;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        text-decoration: none;
+                    }
+
+                    .btn-logout {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        background: $rojo-600;
+                        color: white;
+                        padding: 10px;
+                        border-radius: 50px;
+                        text-decoration: none;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    &.toggled .menu-wrapper {
+        display: block !important;
+        animation: fadeInDown 0.3s ease-out forwards;
+        z-index: 2000;
+    }
+}
+
+/* =========================================
+   3. VERSIÓN DESKTOP (Laptop >= 1200px)
+   ========================================= */
+@include respond-to(laptop) {
+
+    .site-header {
+        padding: $sp-md 0;
+
+        .header-inner {
+            min-height: 80px;
+        }
+    }
+
+    .main-navigation {
+        margin-left: auto;
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .menu-wrapper {
+            display: flex !important;
+            position: static;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+            align-items: center;
+            gap: $sp-xl;
+
+            ul {
+                display: flex;
+                gap: $sp-lg;
+
+                li {
+                    margin: 0;
+
+                    a {
+                        font-size: $fz-base;
+                        font-weight: $fw-medium;
+                        padding: $sp-xs $sp-sm;
+                        color: $text-inverse;
+                        text-decoration: none;
+                        /* Aseguramos que inicie sin subrayado */
+
+                        &:hover {
+                            /* AJUSTE: Solo subrayado en desktop */
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+
+            /* --- HEADER CTA (Botones) --- */
+            .header-cta {
+                margin: 0;
+                padding: 0;
+                border: none;
+
+                /* Estilos base para botón blanco header */
+                .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    width: auto;
+                    color: $neutral-900 !important;
+                    gap: 10px;
+                    /* Gap exacto solicitado */
+                    padding: 10px 24px;
+                    border-radius: 50px;
+                    background: $neutral-0;
+                    font-weight: $fw-medium;
+                    border: 1px solid transparent;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    img {
+                        width: 20px;
+                        height: 20px;
+                        display: block;
+                    }
+
+                    &:hover {
+                        background: $neutral-100;
+                    }
+                }
+
+                /* --- DROPDOWN USUARIO --- */
+                .user-dropdown-wrapper {
+                    position: relative;
+
+                    /* Botón Trigger Activo */
+                    .btn-user-logged {
+
+                        /* Estado cuando el menú está abierto */
+                        &.active {
+                            background-color: $rojo-200;
+                            /* Solicitado */
+                        }
+                    }
+
+                    /* --- SUBMENÚ FIGMA --- */
+                    .user-dropdown-menu {
+                        /* Inicialmente oculto */
+                        display: none;
+
+                        /* Posicionamiento */
+                        position: absolute;
+                        top: calc(100% + 12px);
+                        right: 0;
+                        z-index: 3000;
+
+                        /* Estilos exactos Figma */
+                        /* display: inline-flex (se activa con JS) */
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 24px;
+                        padding: 16px;
+                        border-radius: 10px;
+                        border: 1px solid $neutral-950;
+                        background: $neutral-0;
+                        min-width: 200px;
+                        /* Ancho mínimo para que no se vea apretado */
+
+                        /* Clase para mostrarlo */
+                        &.is-visible {
+                            display: inline-flex;
+                            animation: fadeInDown 0.2s ease-out;
+                        }
+
+                        /* Elemento 1: Ver mis votos */
+                        .link-profile {
+                            font-size: 18px;
+                            /* Un poco más grande y negrita */
+                            font-weight: $fw-bold;
+                            color: $neutral-900;
+                            text-decoration: none;
+                            line-height: 1;
+
+                            &:hover {
+                                color: $brand-primary;
+                            }
+                        }
+
+                        /* Elemento 2: Botón Cerrar Sesión */
+                        .btn-logout {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                            padding: 12px 20px;
+                            background-color: $rojo-600;
+                            color: $text-inverse;
+                            border-radius: 50px;
+                            /* Pill shape */
+                            text-decoration: none;
+                            font-weight: $fw-medium;
+                            font-size: 16px;
+                            white-space: nowrap;
+                            transition: background 0.2s;
+
+                            img {
+                                width: 18px;
+                                height: 18px;
+                            }
+
+                            &:hover {
+                                background-color: $rojo-700;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
