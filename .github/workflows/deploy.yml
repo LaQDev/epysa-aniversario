@@ -10,16 +10,16 @@ jobs:
       - name: Descargar codigo
         uses: actions/checkout@v4
       
-      - name: Subir por FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Limpiar archivos de Git (Para no subirlos al servidor)
+        run: rm -rf .git .github node_modules
+      
+      - name: Subir por SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          local_path: './'
           # IMPORTANTE: Asegúrate de que esta sea la ruta correcta en tu servidor QA
-          server-dir: /home/dh_ayhtkj/epysaaniversario.laq.cl/wp-content/themes/epysa-aniversario/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            .github/**
-            node_modules/**
+          remote_path: '/home/dh_ayhtkj/epysaaniversario.laq.cl/wp-content/themes/epysa-aniversario/'
+          sftpArgs: '-o StrictHostKeyChecking=no'
