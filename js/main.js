@@ -66,4 +66,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // --- 4. BOTÓN SCROLL TO TOP ---
+    const btnScrollTop = document.getElementById('btn-scroll-top');
+    
+    if (btnScrollTop) {
+        // Escuchar el scroll
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 300) {
+                // Si bajamos más de 300px, mostramos el botón
+                btnScrollTop.classList.add('is-visible');
+            } else {
+                // Si estamos arriba, lo ocultamos
+                btnScrollTop.classList.remove('is-visible');
+            }
+        });
+
+        // Acción al hacer clic
+        btnScrollTop.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Scroll suave nativo
+            });
+        });
+    }
+
 });

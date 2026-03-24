@@ -1614,6 +1614,60 @@ main#primary {
           transform: none;
 }
 
+/* =========================================
+   4. SCROLL TO TOP BUTTON (ACTUALIZADO)
+   ========================================= */
+.btn-scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 9900;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.btn-scroll-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+.btn-scroll-top svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+          filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+}
+.btn-scroll-top svg path,
+.btn-scroll-top svg circle {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.btn-scroll-top:hover svg {
+  -webkit-transform: translateY(-3px);
+          transform: translateY(-3px);
+  -webkit-filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.2));
+          filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.2));
+}
+.btn-scroll-top:hover svg path,
+.btn-scroll-top:hover svg circle {
+  fill: #FE7172 !important;
+}
+
 /* main.scss */
 /* 1. SISTEMA DE DISEÑO */
 /* "as *" significa: Carga las variables y quítales el namespace */
