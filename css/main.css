@@ -1674,7 +1674,7 @@ main#primary {
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  padding: 80px 0;
   overflow: hidden;
   color: #FFFFFF;
   display: -webkit-box;
@@ -1684,15 +1684,17 @@ main#primary {
       -ms-flex-align: center;
           align-items: center;
 }
+@media (min-width: 768px) {
+  .hero-section {
+    padding: 100px 0;
+  }
+}
 @media (min-width: 1200px) {
   .hero-section {
-    height: 85vh;
-    min-height: 700px;
+    padding: 120px 0;
   }
 }
 .hero-section.banner-mid {
-  height: auto;
-  min-height: auto;
   padding: 40px 0;
 }
 @media (min-width: 1200px) {
@@ -1745,13 +1747,29 @@ main#primary {
   background-size: cover;
   background-position: center;
 }
+.hero-section .hero-bg .responsive-bg {
+  background-repeat: no-repeat;
+  background-image: var(--bg-mobile);
+}
+@media (min-width: 577px) {
+  .hero-section .hero-bg .responsive-bg {
+    background-image: var(--bg-tablet);
+  }
+}
+@media (min-width: 769px) {
+  .hero-section .hero-bg .responsive-bg {
+    background-image: var(--bg-desktop);
+  }
+}
 .hero-section .hero-bg .bg-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); ELIMINADO */
+  display: none;
+  /* Apagamos la capa oscura */
 }
 .hero-section .container {
   position: relative;
@@ -1769,10 +1787,12 @@ main#primary {
 }
 .hero-section .hero-content {
   max-width: 100%;
+  padding: 0 15px;
 }
 @media (min-width: 1200px) {
   .hero-section .hero-content {
     max-width: 650px;
+    padding: 0;
   }
 }
 .hero-section .hero-content .hero-badge {
@@ -5189,7 +5209,7 @@ main#primary {
 .banner-cierre {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  padding: 60px 0;
   background-color: #E30613;
   overflow: hidden;
   display: -webkit-box;
@@ -5201,8 +5221,41 @@ main#primary {
 }
 @media (min-width: 768px) {
   .banner-cierre {
-    min-height: 500px;
+    padding: 80px 0;
   }
+}
+.banner-cierre .bg-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.banner-cierre .responsive-bg {
+  background-repeat: no-repeat;
+  background-image: var(--bg-mobile);
+}
+@media (min-width: 577px) {
+  .banner-cierre .responsive-bg {
+    background-image: var(--bg-tablet);
+  }
+}
+@media (min-width: 769px) {
+  .banner-cierre .responsive-bg {
+    background-image: var(--bg-desktop);
+  }
+}
+.banner-cierre .bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 1;
 }
 .banner-cierre::before {
   content: "";

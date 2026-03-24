@@ -4,10 +4,29 @@
  * Ubicación: template-parts/hero.php
  */
 
-// 1. Recuperar valores ACF
+// 1. Recuperar valores ACF principales
 $bg_type = get_field('hero_bg_type'); // 'image' o 'video'
-$bg_image = get_field('hero_image');
 $video_id = get_field('hero_video_id'); // Solo el ID (texto)
+
+// 2. Llamamos al GRUPO completo para las imágenes responsivas
+$grupo_fondo = get_field('hero_image');
+
+$bg_desktop = '';
+$bg_tablet  = '';
+$bg_mobile  = '';
+
+if (is_array($grupo_fondo)) {
+    $bg_desktop = isset($grupo_fondo['hero_image_desktop']) ? $grupo_fondo['hero_image_desktop'] : '';
+    $bg_tablet  = isset($grupo_fondo['hero_image_tablet']) ? $grupo_fondo['hero_image_tablet'] : '';
+    $bg_mobile  = isset($grupo_fondo['hero_image_mobile']) ? $grupo_fondo['hero_image_mobile'] : '';
+} elseif (is_string($grupo_fondo) && !empty($grupo_fondo)) {
+    // Fallback por si la base de datos aún tiene la imagen guardada a la manera antigua
+    $bg_desktop = $grupo_fondo;
+}
+
+// 3. Fallbacks de seguridad (si no suben la de tablet/móvil, heredan la de desktop)
+if (!$bg_tablet) $bg_tablet = $bg_desktop;
+if (!$bg_mobile) $bg_mobile = $bg_tablet;
 
 // Badge
 $show_badge = get_field('hero_show_badge');
@@ -17,7 +36,7 @@ $pretitle = get_field('hero_pretitle');
 $title = get_field('hero_title');
 $subtitle = get_field('hero_subtitle');
 
-// Botón (Con el nuevo campo switch)
+// Botón
 $show_btn = get_field('hero_show_btn');
 $btn_text = get_field('hero_btn_text');
 $btn_link = get_field('hero_btn_link');
@@ -37,8 +56,8 @@ $btn_link = get_field('hero_btn_link');
             </div>
             <div class="bg-overlay"></div>
 
-        <?php elseif ($bg_image): ?>
-            <div class="bg-media" style="background-image: url('<?php echo esc_url($bg_image); ?>');"></div>
+        <?php elseif ($bg_desktop): ?>
+            <div class="bg-media responsive-bg" style="--bg-desktop: url('<?php echo esc_url($bg_desktop); ?>'); --bg-tablet: url('<?php echo esc_url($bg_tablet); ?>'); --bg-mobile: url('<?php echo esc_url($bg_mobile); ?>');"></div>
             <div class="bg-overlay"></div>
 
         <?php else: ?>
