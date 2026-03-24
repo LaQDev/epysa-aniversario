@@ -1,10 +1,10 @@
-/* sass/_etapa3.scss */
+// sass/_etapa3.scss
 @use 'variables' as *;
 @use 'mixins' as *;
 
-/* =========================================
-   SECCIÓN: HISTORIAS GANADORAS (ETAPA 3)
-   ========================================= */
+// =========================================
+// SECCIÓN: HISTORIAS GANADORAS (ETAPA 3)
+// =========================================
 .section-ganadores {
     padding: $sp-lg 0;
     background-color: $beige-100;
@@ -16,19 +16,15 @@
     .section-title {
         color: $neutral-900;
         text-align: center;
-        /* Ajuste 3: Título centrado */
         margin-bottom: $sp-lg;
-        /* Ajuste 5: Gap de 40px con la primera card */
     }
 
     .winner-card {
         display: flex;
         padding: 40px;
         flex-direction: column;
-        /* Apilado por defecto en móvil */
         align-items: flex-start;
         gap: 24px;
-        /* Gap entre Izquierda y Derecha (En móvil es vertical) */
         align-self: stretch;
         border-radius: 20px;
         background: $neutral-0;
@@ -39,11 +35,26 @@
 
         @include respond-to(laptop) {
             flex-direction: row;
-            /* Lado a lado en Desktop */
             align-items: center;
         }
 
-        /* --- PARTE IZQUIERDA (Imagen 1/3) --- */
+        // --- NUEVO: Trama de fondo para todos los lugares ---
+        .pattern-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url('../assets/images/bg-50-md.svg');
+            background-repeat: no-repeat;
+            background-position: 30px center;
+            background-size: cover;
+            opacity: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        // --- PARTE IZQUIERDA (Imagen 1/3) ---
         .winner-left {
             width: 100%;
             border-radius: 16px;
@@ -53,7 +64,6 @@
             z-index: 2;
 
             @include respond-to(laptop) {
-                /* Ocupa aprox un tercio menos el gap proporcional */
                 width: calc(33.333% - 12px);
             }
 
@@ -63,7 +73,6 @@
                 object-fit: cover;
                 display: block;
                 aspect-ratio: 1 / 1;
-                /* Forzamos a que sea cuadrada/proporcionada */
             }
 
             .placeholder-img {
@@ -73,24 +82,20 @@
             }
         }
 
-        /* --- PARTE DERECHA (Información 2/3) --- */
+        // --- PARTE DERECHA (Información 2/3) ---
         .winner-right {
             display: flex;
             flex-direction: column;
             gap: 30px;
-            /* Gap entre Parte Superior, Central e Inferior */
             width: 100%;
             z-index: 2;
             flex: 1;
 
-            /* Parte Superior (Badges) */
             .winner-right-top {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 15px;
                 align-items: center;
-
-                /* AJUSTE 1: Espacio entre elementos a los extremos */
                 justify-content: space-between;
                 width: 100%;
 
@@ -104,7 +109,6 @@
                     font-weight: $fw-bold;
                     font-size: 14px;
 
-                    /* AJUSTE: Tamaño del icono de medalla a 23px */
                     img {
                         width: 23px;
                         height: 23px;
@@ -151,7 +155,6 @@
                 }
             }
 
-            /* Parte Central (Textos) */
             .winner-right-mid {
                 display: flex;
                 flex-direction: column;
@@ -180,7 +183,6 @@
                 }
             }
 
-            /* Parte Inferior (Botón) */
             .winner-right-bottom {
                 margin-top: auto;
 
@@ -202,11 +204,10 @@
             }
         }
 
-        /* =========================================
-           VARIANTES DE BORDE Y COLOR POR LUGAR
-           ========================================= */
+        // =========================================
+        // VARIANTES DE BORDE Y COLOR POR LUGAR
+        // =========================================
 
-        /* PRIMER LUGAR */
         &.place-1 {
             border: 1px solid $amarillo-300;
 
@@ -215,27 +216,9 @@
                 color: $amarillo-600;
             }
 
-            /* Ajuste 1: Trama de fondo solo para el 1er lugar */
-            &::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 50%;
-                height: 100%;
-                background-image: url('../assets/images/bg-50-md.svg');
-                background-repeat: no-repeat;
-                background-position: 30px center;
-                /* Ajuste solicitado */
-                background-size: cover;
-                opacity: 1;
-                /* Ajuste solicitado */
-                z-index: 0;
-                pointer-events: none;
-            }
+            // La trama .pattern-bg ahora se hereda de la clase padre
         }
 
-        /* SEGUNDO LUGAR */
         &.place-2 {
             border: 1px solid $gris-400;
 
@@ -245,7 +228,6 @@
             }
         }
 
-        /* TERCER LUGAR */
         &.place-3 {
             border: 1px solid $amarillo-600;
 
@@ -257,22 +239,19 @@
     }
 }
 
-/* =========================================
-   SECCIÓN: GANADORES DEL SORTEO (ETAPA 3)
-   ========================================= */
+// =========================================
+// SECCIÓN: GANADORES DEL SORTEO (ETAPA 3)
+// =========================================
 .section-sorteo {
-    /* 3. Padding top y bottom de 40px */
     padding: $sp-lg 0;
     background-color: $beige-100;
 
     .sorteo-header {
         text-align: center;
-        /* 4. Gap de 40px entre la bajada y las cards */
         margin-bottom: $sp-lg;
 
         .section-title {
             color: $neutral-900;
-            /* 4. Gap de 10px entre el título y la bajada */
             margin-bottom: 10px;
         }
 
@@ -282,45 +261,34 @@
             margin: 0;
             line-height: 1.5;
 
-            /* Aseguramos que si ACF imprime un <p> interno, no agregue márgenes no deseados */
             p {
                 margin: 0;
             }
         }
     }
 
-    /* 6 y 9. Contenedor de las Cards (Apilado en móvil, Lado a lado en Desktop) */
     .sorteo-grid {
         display: flex;
         flex-direction: column;
         gap: $sp-lg;
-        /* Gap de 40px apilado en móviles */
 
         @include respond-to(laptop) {
             flex-direction: row;
-            /* Fila en 1200px */
             gap: 24px;
-            /* Gap entre columnas en desktop */
         }
 
-        /* 7 y 8. Estructura de la Card */
         .sorteo-card {
             flex: 1;
-            /* Para que las 3 midan exactamente lo mismo de ancho */
             display: flex;
             padding: $sp-lg;
-            /* 40px internos */
             flex-direction: column;
             align-items: flex-start;
             gap: 20px;
-            /* 20px entre Icono -> Info -> Premio */
             border-radius: 10px;
             border: 1px dashed $amarillo-300;
-            /* Borde segmentado */
             background: $neutral-0;
 
             .sorteo-icon {
-                /* Icono 90x90px */
                 width: 90px;
                 height: 90px;
                 flex-shrink: 0;
@@ -337,12 +305,10 @@
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
-                /* Pequeño respiro entre Nombre y Área */
 
                 .sorteo-name {
                     font-size: 24px;
                     font-weight: $fw-bold;
-                    /* Negrita pesada */
                     color: $neutral-900;
                     margin: 0;
                     line-height: 1.2;
@@ -359,7 +325,6 @@
             .sorteo-prize {
                 font-size: 20px;
                 font-weight: $fw-bold;
-                /* Negrita pesada */
                 color: $neutral-900;
                 margin: 0;
                 line-height: 1.2;
@@ -368,11 +333,10 @@
     }
 }
 
-/* =========================================
-   SECCIÓN: HISTORIAS DESTACADAS (ETAPA 3)
-   ========================================= */
+// =========================================
+// SECCIÓN: HISTORIAS DESTACADAS (ETAPA 3)
+// =========================================
 .section-destacadas {
-    /* Hereda fondo y trama de .section-historias */
     padding: $sp-lg 0;
 
     @include respond-to(laptop) {
@@ -381,13 +345,11 @@
 
     .story-card {
 
-        /* Ajustamos el flex de la tarjeta para que la columna de imagen 
-           pueda stackear verticalmente la foto y el badge */
         .story-img-col {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 120px; // Un poco más ancho para acomodar el badge
+            width: 120px;
 
             .pill-valor {
                 display: inline-flex;
@@ -440,9 +402,9 @@
     }
 }
 
-/* =========================================
-   SECCIÓN: BANNER DE CIERRE (ETAPA 3)
-   ========================================= */
+// =========================================
+// SECCIÓN: BANNER DE CIERRE (ETAPA 3)
+// =========================================
 .banner-cierre {
     position: relative;
     width: 100%;
@@ -459,8 +421,6 @@
     &::before {
         content: '';
         position: absolute;
-
-        /* Ajuste 2: Trama a la derecha */
         right: 3%;
         top: -10px;
         bottom: -40px;
@@ -472,8 +432,6 @@
         background-size: 100% auto;
 
         z-index: 0;
-
-        /* Ajuste 1: Opacidad al 100% */
         opacity: 1;
         pointer-events: none;
 
@@ -492,10 +450,7 @@
         font-weight: $fw-semibold;
         color: $neutral-0;
         margin: 0;
-
-        /* Ajuste 3: Texto alineado a la izquierda */
         text-align: left;
-
         font-size: 28px;
         line-height: 1.2;
 

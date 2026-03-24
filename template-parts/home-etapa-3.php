@@ -58,6 +58,9 @@ $ganadores = [
                 <div class="<?php echo $ganador['col_class']; ?>">
 
                     <div class="winner-card <?php echo $ganador['place_class']; ?>">
+
+                        <div class="pattern-bg"></div>
+
                         <div class="winner-left">
                             <?php if ($thumb): ?>
                                 <img src="<?php echo esc_url($thumb); ?>" alt="Ganador">
