@@ -304,3 +304,27 @@ function epysa_guardar_nombre()
         wp_send_json_success(['message' => 'Perfil actualizado']);
     }
 }
+
+/* --------------------------------------------------------------
+   4. CAMBIAR REMITENTE DE LOS CORREOS (Nombre y Email)
+-------------------------------------------------------------- */
+// Cambiar el Email del remitente
+add_filter('wp_mail_from', 'epysa_correo_remitente');
+function epysa_correo_remitente($original_email_address)
+{
+    // Obtenemos el dominio actual de forma dinámica
+    $dominio = wp_parse_url(home_url(), PHP_URL_HOST);
+
+    // Por si acaso, limpiamos el "www." si el dominio lo incluye
+    $dominio = preg_replace('/^www\./', '', $dominio);
+
+    // Retornamos el correo con la estructura solicitada
+    return 'no-rep@' . $dominio;
+}
+
+// Cambiar el Nombre del remitente
+add_filter('wp_mail_from_name', 'epysa_nombre_remitente');
+function epysa_nombre_remitente($original_email_from)
+{
+    return 'Epysa Aniversario';
+}

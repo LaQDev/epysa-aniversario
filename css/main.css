@@ -1614,13 +1614,67 @@ main#primary {
           transform: none;
 }
 
+/* =========================================
+   4. SCROLL TO TOP BUTTON (ACTUALIZADO)
+   ========================================= */
+.btn-scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 9900;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.btn-scroll-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+.btn-scroll-top svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+          filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+}
+.btn-scroll-top svg path,
+.btn-scroll-top svg circle {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.btn-scroll-top:hover svg {
+  -webkit-transform: translateY(-3px);
+          transform: translateY(-3px);
+  -webkit-filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.2));
+          filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.2));
+}
+.btn-scroll-top:hover svg path,
+.btn-scroll-top:hover svg circle {
+  fill: #FE7172 !important;
+}
+
 /* main.scss */
 /* 1. SISTEMA DE DISEÑO */
 /* "as *" significa: Carga las variables y quítales el namespace */
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  padding: 80px 0;
   overflow: hidden;
   color: #FFFFFF;
   display: -webkit-box;
@@ -1630,15 +1684,17 @@ main#primary {
       -ms-flex-align: center;
           align-items: center;
 }
+@media (min-width: 768px) {
+  .hero-section {
+    padding: 100px 0;
+  }
+}
 @media (min-width: 1200px) {
   .hero-section {
-    height: 85vh;
-    min-height: 700px;
+    padding: 120px 0;
   }
 }
 .hero-section.banner-mid {
-  height: auto;
-  min-height: auto;
   padding: 40px 0;
 }
 @media (min-width: 1200px) {
@@ -1691,13 +1747,29 @@ main#primary {
   background-size: cover;
   background-position: center;
 }
+.hero-section .hero-bg .responsive-bg {
+  background-repeat: no-repeat;
+  background-image: var(--bg-mobile);
+}
+@media (min-width: 577px) {
+  .hero-section .hero-bg .responsive-bg {
+    background-image: var(--bg-tablet);
+  }
+}
+@media (min-width: 769px) {
+  .hero-section .hero-bg .responsive-bg {
+    background-image: var(--bg-desktop);
+  }
+}
 .hero-section .hero-bg .bg-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); ELIMINADO */
+  display: none;
+  /* Apagamos la capa oscura */
 }
 .hero-section .container {
   position: relative;
@@ -1715,10 +1787,12 @@ main#primary {
 }
 .hero-section .hero-content {
   max-width: 100%;
+  padding: 0 15px;
 }
 @media (min-width: 1200px) {
   .hero-section .hero-content {
     max-width: 650px;
+    padding: 0;
   }
 }
 .hero-section .hero-content .hero-badge {
@@ -4724,10 +4798,6 @@ main#primary {
 /* main.scss */
 /* 1. SISTEMA DE DISEÑO */
 /* "as *" significa: Carga las variables y quítales el namespace */
-/* sass/_etapa3.scss */
-/* =========================================
-   SECCIÓN: HISTORIAS GANADORAS (ETAPA 3)
-   ========================================= */
 .section-ganadores {
   padding: 40px 0;
   background-color: #F3F1EB;
@@ -4740,9 +4810,7 @@ main#primary {
 .section-ganadores .section-title {
   color: #1D1D1D;
   text-align: center;
-  /* Ajuste 3: Título centrado */
   margin-bottom: 40px;
-  /* Ajuste 5: Gap de 40px con la primera card */
 }
 .section-ganadores .winner-card {
   display: -webkit-box;
@@ -4753,12 +4821,10 @@ main#primary {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  /* Apilado por defecto en móvil */
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
   gap: 24px;
-  /* Gap entre Izquierda y Derecha (En móvil es vertical) */
   -ms-flex-item-align: stretch;
       align-self: stretch;
   border-radius: 20px;
@@ -4774,14 +4840,24 @@ main#primary {
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
             flex-direction: row;
-    /* Lado a lado en Desktop */
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
   }
 }
-.section-ganadores .winner-card {
-  /* --- PARTE IZQUIERDA (Imagen 1/3) --- */
+.section-ganadores .winner-card .pattern-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-image: url("../assets/images/bg-50-md.svg");
+  background-repeat: no-repeat;
+  background-position: 30px center;
+  background-size: cover;
+  opacity: 1;
+  z-index: 0;
+  pointer-events: none;
 }
 .section-ganadores .winner-card .winner-left {
   width: 100%;
@@ -4794,7 +4870,6 @@ main#primary {
 }
 @media (min-width: 1200px) {
   .section-ganadores .winner-card .winner-left {
-    /* Ocupa aprox un tercio menos el gap proporcional */
     width: calc(33.333% - 12px);
   }
 }
@@ -4805,15 +4880,11 @@ main#primary {
      object-fit: cover;
   display: block;
   aspect-ratio: 1/1;
-  /* Forzamos a que sea cuadrada/proporcionada */
 }
 .section-ganadores .winner-card .winner-left .placeholder-img {
   width: 100%;
   aspect-ratio: 1/1;
   background-color: #C9C9C9;
-}
-.section-ganadores .winner-card {
-  /* --- PARTE DERECHA (Información 2/3) --- */
 }
 .section-ganadores .winner-card .winner-right {
   display: -webkit-box;
@@ -4824,13 +4895,11 @@ main#primary {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 30px;
-  /* Gap entre Parte Superior, Central e Inferior */
   width: 100%;
   z-index: 2;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  /* Parte Superior (Badges) */
 }
 .section-ganadores .winner-card .winner-right .winner-right-top {
   display: -webkit-box;
@@ -4842,7 +4911,6 @@ main#primary {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  /* AJUSTE 1: Espacio entre elementos a los extremos */
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -4861,7 +4929,6 @@ main#primary {
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
-  /* AJUSTE: Tamaño del icono de medalla a 23px */
 }
 .section-ganadores .winner-card .winner-right .winner-right-top .winner-badge img {
   width: 23px;
@@ -4904,9 +4971,6 @@ main#primary {
   width: 16px;
   height: 16px;
 }
-.section-ganadores .winner-card .winner-right {
-  /* Parte Central (Textos) */
-}
 .section-ganadores .winner-card .winner-right .winner-right-mid {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -4936,9 +5000,6 @@ main#primary {
   line-height: 1.6;
   margin: 0;
 }
-.section-ganadores .winner-card .winner-right {
-  /* Parte Inferior (Botón) */
-}
 .section-ganadores .winner-card .winner-right .winner-right-bottom {
   margin-top: auto;
 }
@@ -4956,12 +5017,6 @@ main#primary {
 .section-ganadores .winner-card .winner-right .winner-right-bottom .btn-link-read:hover {
   color: rgb(177.313304721, 4.686695279, 14.8412017167);
 }
-.section-ganadores .winner-card {
-  /* =========================================
-     VARIANTES DE BORDE Y COLOR POR LUGAR
-     ========================================= */
-  /* PRIMER LUGAR */
-}
 .section-ganadores .winner-card.place-1 {
   border: 1px solid #FFB81B;
 }
@@ -4969,38 +5024,12 @@ main#primary {
   background-color: #FFCF92;
   color: #8C6302;
 }
-.section-ganadores .winner-card.place-1 {
-  /* Ajuste 1: Trama de fondo solo para el 1er lugar */
-}
-.section-ganadores .winner-card.place-1::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background-image: url("../assets/images/bg-50-md.svg");
-  background-repeat: no-repeat;
-  background-position: 30px center;
-  /* Ajuste solicitado */
-  background-size: cover;
-  opacity: 1;
-  /* Ajuste solicitado */
-  z-index: 0;
-  pointer-events: none;
-}
-.section-ganadores .winner-card {
-  /* SEGUNDO LUGAR */
-}
 .section-ganadores .winner-card.place-2 {
   border: 1px solid #A6A6A6;
 }
 .section-ganadores .winner-card.place-2 .winner-badge {
   background-color: #BBBBBB;
   color: #FFFFFF;
-}
-.section-ganadores .winner-card {
-  /* TERCER LUGAR */
 }
 .section-ganadores .winner-card.place-3 {
   border: 1px solid #8C6302;
@@ -5010,22 +5039,16 @@ main#primary {
   color: #FFFFFF;
 }
 
-/* =========================================
-   SECCIÓN: GANADORES DEL SORTEO (ETAPA 3)
-   ========================================= */
 .section-sorteo {
-  /* 3. Padding top y bottom de 40px */
   padding: 40px 0;
   background-color: #F3F1EB;
 }
 .section-sorteo .sorteo-header {
   text-align: center;
-  /* 4. Gap de 40px entre la bajada y las cards */
   margin-bottom: 40px;
 }
 .section-sorteo .sorteo-header .section-title {
   color: #1D1D1D;
-  /* 4. Gap de 10px entre el título y la bajada */
   margin-bottom: 10px;
 }
 .section-sorteo .sorteo-header .sorteo-subtitle {
@@ -5033,13 +5056,9 @@ main#primary {
   color: #1D1D1D;
   margin: 0;
   line-height: 1.5;
-  /* Aseguramos que si ACF imprime un <p> interno, no agregue márgenes no deseados */
 }
 .section-sorteo .sorteo-header .sorteo-subtitle p {
   margin: 0;
-}
-.section-sorteo {
-  /* 6 y 9. Contenedor de las Cards (Apilado en móvil, Lado a lado en Desktop) */
 }
 .section-sorteo .sorteo-grid {
   display: -webkit-box;
@@ -5050,7 +5069,6 @@ main#primary {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 40px;
-  /* Gap de 40px apilado en móviles */
 }
 @media (min-width: 1200px) {
   .section-sorteo .sorteo-grid {
@@ -5058,24 +5076,17 @@ main#primary {
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
             flex-direction: row;
-    /* Fila en 1200px */
     gap: 24px;
-    /* Gap entre columnas en desktop */
   }
-}
-.section-sorteo .sorteo-grid {
-  /* 7 y 8. Estructura de la Card */
 }
 .section-sorteo .sorteo-grid .sorteo-card {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  /* Para que las 3 midan exactamente lo mismo de ancho */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   padding: 40px;
-  /* 40px internos */
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -5084,14 +5095,11 @@ main#primary {
       -ms-flex-align: start;
           align-items: flex-start;
   gap: 20px;
-  /* 20px entre Icono -> Info -> Premio */
   border-radius: 10px;
   border: 1px dashed #FFB81B;
-  /* Borde segmentado */
   background: #FFFFFF;
 }
 .section-sorteo .sorteo-grid .sorteo-card .sorteo-icon {
-  /* Icono 90x90px */
   width: 90px;
   height: 90px;
   -ms-flex-negative: 0;
@@ -5113,12 +5121,10 @@ main#primary {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 5px;
-  /* Pequeño respiro entre Nombre y Área */
 }
 .section-sorteo .sorteo-grid .sorteo-card .sorteo-info .sorteo-name {
   font-size: 24px;
   font-weight: 700;
-  /* Negrita pesada */
   color: #1D1D1D;
   margin: 0;
   line-height: 1.2;
@@ -5132,27 +5138,18 @@ main#primary {
 .section-sorteo .sorteo-grid .sorteo-card .sorteo-prize {
   font-size: 20px;
   font-weight: 700;
-  /* Negrita pesada */
   color: #1D1D1D;
   margin: 0;
   line-height: 1.2;
 }
 
-/* =========================================
-   SECCIÓN: HISTORIAS DESTACADAS (ETAPA 3)
-   ========================================= */
 .section-destacadas {
-  /* Hereda fondo y trama de .section-historias */
   padding: 40px 0;
 }
 @media (min-width: 1200px) {
   .section-destacadas {
     padding: 80px 0;
   }
-}
-.section-destacadas .story-card {
-  /* Ajustamos el flex de la tarjeta para que la columna de imagen 
-     pueda stackear verticalmente la foto y el badge */
 }
 .section-destacadas .story-card .story-img-col {
   display: -webkit-box;
@@ -5209,13 +5206,10 @@ main#primary {
   margin-top: 15px;
 }
 
-/* =========================================
-   SECCIÓN: BANNER DE CIERRE (ETAPA 3)
-   ========================================= */
 .banner-cierre {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  padding: 60px 0;
   background-color: #E30613;
   overflow: hidden;
   display: -webkit-box;
@@ -5227,13 +5221,45 @@ main#primary {
 }
 @media (min-width: 768px) {
   .banner-cierre {
-    min-height: 500px;
+    padding: 80px 0;
   }
+}
+.banner-cierre .bg-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.banner-cierre .responsive-bg {
+  background-repeat: no-repeat;
+  background-image: var(--bg-mobile);
+}
+@media (min-width: 577px) {
+  .banner-cierre .responsive-bg {
+    background-image: var(--bg-tablet);
+  }
+}
+@media (min-width: 769px) {
+  .banner-cierre .responsive-bg {
+    background-image: var(--bg-desktop);
+  }
+}
+.banner-cierre .bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 1;
 }
 .banner-cierre::before {
   content: "";
   position: absolute;
-  /* Ajuste 2: Trama a la derecha */
   right: 3%;
   top: -10px;
   bottom: -40px;
@@ -5243,7 +5269,6 @@ main#primary {
   background-position: center top;
   background-size: 100% auto;
   z-index: 0;
-  /* Ajuste 1: Opacidad al 100% */
   opacity: 1;
   pointer-events: none;
 }
@@ -5261,7 +5286,6 @@ main#primary {
   font-weight: 600;
   color: #FFFFFF;
   margin: 0;
-  /* Ajuste 3: Texto alineado a la izquierda */
   text-align: left;
   font-size: 28px;
   line-height: 1.2;

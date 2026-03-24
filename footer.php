@@ -28,6 +28,12 @@
     </div>
 </footer>
 
+<button id="btn-scroll-top" class="btn-scroll-top" aria-label="Volver arriba">
+    <?php
+    include get_template_directory() . '/assets/icons/scroll-up.svg'; 
+    ?>
+</button>
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <div id="modal-historia-wrapper" class="epysa-modal gallery-modal-theme">

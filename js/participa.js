@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let firstErrorElement = null;
 
         // A. Validar Inputs de Texto
-        const inputs = form.querySelectorAll('input[type="text"], input[type="number"], select, textarea');
+        const inputs = form.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], select, textarea');
         inputs.forEach(input => {
             if (!validateField(input)) {
                 isValid = false;
@@ -246,7 +246,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validateField(input) {
         const group = input.closest('.form-group');
+        let isValid = true;
+
         if (!input.value.trim()) {
+            isValid = false;
+        } else if (input.type === 'email') {
+            // Validación de formato de correo electrónico
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(input.value.trim())) {
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
             showError(group);
             return false;
         } else {

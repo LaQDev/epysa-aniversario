@@ -159,3 +159,73 @@
         transform: none;
     }
 }
+
+/* =========================================
+   4. SCROLL TO TOP BUTTON (ACTUALIZADO)
+   ========================================= */
+.btn-scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px; // Mantener el tamaño de la imagen solicitada
+    height: 50px;
+
+    // Ajuste: Botón transparente, la imagen ya trae su fondo
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 9900;
+
+    // Estado Oculto
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+
+    // Estado Visible
+    &.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    // Estilos para el SVG inline
+    svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        transition: transform 0.3s ease;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+
+        // Ajuste Crítico: Seleccionar el círculo marrón dentro del SVG
+        // Asumimos que es un tag 'circle' o un path con fill hardcoded. 
+        // Si el SVG está bien hecho, esto funcionará:
+        path,
+        circle {
+            transition: fill 0.3s ease;
+            // No forzamos fill inicial aquí para respetar el del archivo nativo
+        }
+    }
+
+    // Hover solicitado por cliente
+    &:hover {
+        svg {
+            transform: translateY(-3px); // Feedback visual
+            filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.2));
+
+            // Ajuste: Cambiar el fondo INTERNO de la imagen al rojo-400
+            path,
+            circle {
+                fill: $rojo-400 !important; // Rojo solicitado en hover
+            }
+        }
+    }
+
+    @include respond-to(mobile) {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+}

@@ -13,8 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     } else {
         $nombre = sanitize_text_field($_POST['nombre']);
         $apellido = sanitize_text_field($_POST['apellido']);
-        $area = sanitize_text_field($_POST['area']);
+        $empresa = sanitize_text_field($_POST['empresa']);
         $region = sanitize_text_field($_POST['region']);
+        $email = sanitize_email($_POST['email']);
         $anos = sanitize_text_field($_POST['anos']);
         $valor = sanitize_text_field($_POST['valor']);
         $titulo = sanitize_text_field($_POST['titulo']);
@@ -32,8 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         if ($pid) {
             update_field('nombre', $nombre, $pid);
             update_field('apellido', $apellido, $pid);
-            update_field('area', $area, $pid);
+            update_field('empresa', $empresa, $pid);
             update_field('region', $region, $pid);
+            update_field('email_participante', $email, $pid);
             update_field('anos_epysa', $anos, $pid);
             update_field('valor_epysa', $valor, $pid);
 
@@ -121,14 +123,16 @@ get_header();
                             </div>
 
                             <div class="form-group half-width">
-                                <label class="form-label">Área <span class="asterisk">*</span></label>
-                                <select name="area" class="form-select" required>
-                                    <option value="" disabled selected>Selecciona un área</option>
-                                    <option value="Ventas">Ventas</option>
-                                    <option value="Taller">Taller</option>
-                                    <option value="Admin">Administración</option>
+                                <label class="form-label">Empresa <span class="asterisk">*</span></label>
+                                <select name="empresa" class="form-select" required>
+                                    <option value="" disabled selected>Selecciona tu empresa</option>
+                                    <option value="Epysa Buses">Epysa Buses</option>
+                                    <option value="Epysa Equipos">Epysa Equipos</option>
+                                    <option value="Mundo Buses">Mundo Buses</option>
+                                    <option value="Fitrans">Fitrans</option>
+                                    <option value="Alianza Inmobiliaria">Alianza Inmobiliaria</option>
                                 </select>
-                                <div class="form-hint">Selecciona el área.</div>
+                                <div class="form-hint">Selecciona tu empresa.</div>
                             </div>
                             <div class="form-group half-width">
                                 <label class="form-label">Región <span class="asterisk">*</span></label>
@@ -157,7 +161,14 @@ get_header();
                                 <div class="form-hint">Selecciona tu región.</div>
                             </div>
 
-                            <div class="form-group full-width">
+                            <div class="form-group half-width">
+                                <label class="form-label">Correo electrónico <span class="asterisk">*</span></label>
+                                <input type="email" name="email" class="form-control" placeholder="tu.nombre@epysa.cl"
+                                    required>
+                                <div class="form-hint">Ingresa un correo electrónico válido.</div>
+                            </div>
+
+                            <div class="form-group half-width">
                                 <label class="form-label">Años en Epysa <span class="asterisk">*</span></label>
                                 <input type="number" name="anos" class="form-control" placeholder="Ej: 15" required>
                                 <div class="form-hint">Ingresa tus años de antigüedad.</div>
