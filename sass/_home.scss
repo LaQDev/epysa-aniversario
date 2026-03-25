@@ -91,16 +91,15 @@
             }
         }
 
-        // 1. AJUSTE: Ocultar el overlay oscuro
         .bg-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* background-color: rgba(0, 0, 0, 0.4); ELIMINADO */
-            display: none;
-            /* Apagamos la capa oscura */
+            background-color: rgba(0, 0, 0, 0.4); 
+            display: block; 
+            z-index: 1;
         }
     }
 

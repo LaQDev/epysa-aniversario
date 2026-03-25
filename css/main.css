@@ -1767,9 +1767,9 @@ main#primary {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(0, 0, 0, 0.4); ELIMINADO */
-  display: none;
-  /* Apagamos la capa oscura */
+  background-color: rgba(0, 0, 0, 0.4);
+  display: block;
+  z-index: 1;
 }
 .hero-section .container {
   position: relative;
