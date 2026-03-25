@@ -1713,7 +1713,6 @@ main#primary {
   width: 100%;
   height: 100%;
   z-index: 1;
-  background-color: #000;
 }
 .hero-section .hero-bg .video-container {
   position: absolute;
@@ -1744,8 +1743,8 @@ main#primary {
 .hero-section .hero-bg .bg-media {
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: 100% 0;
 }
 .hero-section .hero-bg .responsive-bg {
   background-repeat: no-repeat;
@@ -5230,8 +5229,8 @@ main#primary {
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: 100% 0;
   z-index: 0;
 }
 .banner-cierre .responsive-bg {

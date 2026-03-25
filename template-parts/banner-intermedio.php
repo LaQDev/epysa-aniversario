@@ -8,6 +8,10 @@ $bg_type = get_field('banner_mid_bg_type');
 $video_id = get_field('banner_mid_video_id');
 $grupo_fondo = get_field('banner_mid_image');
 
+// NUEVO: Rescatar el color de fondo
+$bg_color = get_field('banner_mid_bg_color');
+$bg_color_code = $bg_color ? $bg_color : '#EDEAEB'; // Fallback
+
 $bg_desktop = '';
 $bg_tablet = '';
 $bg_mobile = '';
@@ -20,7 +24,6 @@ if (is_array($grupo_fondo)) {
     $bg_desktop = $grupo_fondo;
 }
 
-// SOLUCIÓN: Extracción segura de URL
 $bg_desktop_url = is_array($bg_desktop) ? ($bg_desktop['url'] ?? '') : $bg_desktop;
 $bg_tablet_url = is_array($bg_tablet) ? ($bg_tablet['url'] ?? '') : $bg_tablet;
 $bg_mobile_url = is_array($bg_mobile) ? ($bg_mobile['url'] ?? '') : $bg_mobile;
@@ -42,7 +45,8 @@ if (!$title)
 ?>
 
 <section class="hero-section banner-mid">
-    <div class="hero-bg">
+
+    <div class="hero-bg" style="background-color: <?php echo esc_attr($bg_color_code); ?>;">
         <?php if ($bg_type === 'video' && $video_id): ?>
             <div class="video-container">
                 <iframe
@@ -58,7 +62,7 @@ if (!$title)
             <div class="bg-overlay"></div>
 
         <?php else: ?>
-            <div class="bg-media" style="background-color: #E30613;"></div>
+            <div class="bg-media"></div>
         <?php endif; ?>
     </div>
 
