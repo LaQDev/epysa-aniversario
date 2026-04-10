@@ -2048,7 +2048,7 @@ main#primary {
   background-color: #E5E0D2;
   background-image: url("../assets/images/bg-50-filled.svg");
   background-repeat: repeat-x;
-  background-position: center;
+  background-position: 50% -100%;
   background-size: auto;
 }
 .section-pasos.bg-outline-alt {
@@ -2358,25 +2358,10 @@ main#primary {
 .section-historias {
   padding: 80px 0;
   background-color: #F3F1EB;
-  position: relative;
-  overflow: hidden;
-}
-.section-historias::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  left: 0;
-  width: 100%;
-  height: 100%;
   background-image: url("../assets/images/bg-50-outline-v2.svg");
   background-repeat: repeat-x;
-  background-position: -100px center;
+  background-position: 50% -100%;
   background-size: auto;
-  z-index: 1;
-  opacity: 0.6;
-  pointer-events: none;
 }
 .section-historias .container,
 .section-historias .section-title,

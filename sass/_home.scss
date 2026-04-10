@@ -409,7 +409,7 @@
     background-color: $beige-200;
     background-image: url("../assets/images/bg-50-filled.svg");
     background-repeat: repeat-x;
-    background-position: center;
+    background-position: 50% -100%;
     background-size: auto;
 
     &.bg-outline-alt {
@@ -775,29 +775,11 @@
 .section-historias {
     padding: $sp-xxl 0;
     background-color: $beige-100;
-    position: relative;
-    overflow: hidden;
+    background-image: url('../assets/images/bg-50-outline-v2.svg');
+    background-repeat: repeat-x;
+    background-position: 50% -100%;
+    background-size: auto;
 
-    &::before {
-        content: '';
-        position: absolute;
-
-        // Centrado Vertical
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('../assets/images/bg-50-outline-v2.svg');
-        background-repeat: repeat-x;
-        background-position: -100px center;
-        background-size: auto;
-        z-index: 1;
-        opacity: 0.6;
-        pointer-events: none;
-    }
-
-    // Aseguramos que el título y contenido estén SOBRE la trama
     .container,
     .section-title,
     .historias-swiper,
