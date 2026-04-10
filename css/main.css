@@ -2052,7 +2052,7 @@ main#primary {
   background-size: auto;
 }
 .section-pasos.bg-outline-alt {
-  background-image: url("../assets/images/bg-50-outline.svg");
+  background-image: url("../assets/images/bg-50-outline-v2.svg");
 }
 .section-pasos .section-title {
   color: #1D1D1D;
@@ -2370,7 +2370,7 @@ main#primary {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/bg-50-outline.svg");
+  background-image: url("../assets/images/bg-50-outline-v2.svg");
   background-repeat: repeat-x;
   background-position: -100px center;
   background-size: auto;

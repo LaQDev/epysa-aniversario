@@ -413,7 +413,7 @@
     background-size: auto;
 
     &.bg-outline-alt {
-        background-image: url('../assets/images/bg-50-outline.svg');
+        background-image: url('../assets/images/bg-50-outline-v2.svg');
     }
 
     // TÍTULO DE SECCIÓN
@@ -775,11 +775,8 @@
 .section-historias {
     padding: $sp-xxl 0;
     background-color: $beige-100;
-
-    // CONFIGURACIÓN DE TRAMA DE FONDO
     position: relative;
     overflow: hidden;
-    // Evita que la trama se salga si es muy grande
 
     &::before {
         content: '';
@@ -791,19 +788,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        // O la altura que tenga tu SVG si es una franja fija
-
-        background-image: url('../assets/images/bg-50-outline.svg');
+        background-image: url('../assets/images/bg-50-outline-v2.svg');
         background-repeat: repeat-x;
-        // Solo horizontal
         background-position: -100px center;
-        // Centrado
         background-size: auto;
-
         z-index: 1;
-        // Nivel fondo
         opacity: 0.6;
-        // Opcional: ajusta la opacidad si el outline es muy fuerte
         pointer-events: none;
     }
 
