@@ -410,7 +410,7 @@
     background-image: url("../assets/images/bg-50-filled.svg");
     background-repeat: repeat-x;
     background-position: 50% -100%;
-    background-size: auto;
+    background-size: contain;
 
     &.bg-outline-alt {
         background-image: url('../assets/images/bg-50-outline-v2.svg');
@@ -778,7 +778,7 @@
     background-image: url('../assets/images/bg-50-outline-v2.svg');
     background-repeat: repeat-x;
     background-position: 50% -100%;
-    background-size: auto;
+    background-size: contain;
 
     .container,
     .section-title,

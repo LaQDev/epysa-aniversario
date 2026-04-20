@@ -136,7 +136,7 @@ $legal_link = get_field('premios_legal_link');
 </section>
 
 <?php $steps_title = get_field('pasos_section_title'); ?>
-<section id="pasos" class="section-pasos">
+<section id="pasos" class="section-pasos bg-outline-alt">
     <div class="container">
         <div class="row mb-4">
             <div class="col-12 text-start">
