@@ -30,7 +30,10 @@
 
 <button id="btn-scroll-top" class="btn-scroll-top" aria-label="Volver arriba">
     <?php
-    include get_template_directory() . '/assets/icons/scroll-up.svg'; 
+    $svg_path = get_template_directory() . '/assets/icons/scroll-up.svg';
+    if (file_exists($svg_path)) {
+        echo file_get_contents($svg_path);
+    }
     ?>
 </button>
 
