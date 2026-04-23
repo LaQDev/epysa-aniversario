@@ -58,10 +58,7 @@
                         <div class="header-cta">
 
                             <?php if ($etapa_actual === 1): ?>
-                                <a href="<?php echo home_url('/envia-tu-historia'); ?>" class="btn btn-inverse">Participa
-                                    ahora</a>
-
-                            <?php elseif ($etapa_actual === 2): ?>
+                                <?php elseif ($etapa_actual === 2): ?>
 
                                 <?php if (is_user_logged_in()): ?>
                                     <?php
