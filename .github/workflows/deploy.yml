@@ -19,7 +19,8 @@ jobs:
         run: rm -rf .git .github node_modules
       
       - name: Subir por SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        # Pin a SHA inmutable (v1.2.4). Renovar manualmente al actualizar.
+        uses: wlixcc/SFTP-Deploy-Action@da88a4dbe95286266bbac3c0b2b8284048d20c8f
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
