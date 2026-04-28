@@ -34,6 +34,24 @@ function epysa_solicitar_login()
         wp_send_json_error(['message' => 'Debes usar un correo institucional (@epysa.cl).']);
     }
 
+    // 2.5. Rate limiting (transients, ventana 1 hora)
+    // Evita abuso del envío de magic links: spam de correos, enumeración de usuarios.
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    $email_key = 'epysa_ml_email_' . md5(strtolower($email));
+    $ip_key = 'epysa_ml_ip_' . md5($ip);
+
+    $email_count = (int) get_transient($email_key);
+    $ip_count = (int) get_transient($ip_key);
+
+    if ($email_count >= 5 || $ip_count >= 20) {
+        wp_send_json_error([
+            'message' => 'Has solicitado demasiados enlaces. Intenta nuevamente en una hora.'
+        ]);
+    }
+
+    set_transient($email_key, $email_count + 1, HOUR_IN_SECONDS);
+    set_transient($ip_key, $ip_count + 1, HOUR_IN_SECONDS);
+
     // 3. Buscar o Crear Usuario
     $user = get_user_by('email', $email);
 
