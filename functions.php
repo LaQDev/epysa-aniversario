@@ -38,16 +38,19 @@ require_once EPYSA_THEME_DIR . '/inc/auth-login.php';
 // 8. Sistema de Exportación de Datos
 require_once get_template_directory() . '/inc/exportador.php';
 
-if (function_exists('acf_add_options_page')) {
-    
+add_action('acf/init', 'epysa_register_options_page');
+function epysa_register_options_page() {
+    if (!function_exists('acf_add_options_page')) {
+        return;
+    }
+
     acf_add_options_page(array(
-        'page_title'    => 'Configuración General del Sitio',
-        'menu_title'    => 'Configuración Epysa',
-        'menu_slug'     => 'configuracion-epysa',
-        'capability'    => 'edit_posts',
-        'redirect'      => false,
-        'icon_url'      => 'dashicons-admin-settings', // Icono de tuerca
-        'position'      => 2
+        'page_title' => 'Configuración General del Sitio',
+        'menu_title' => 'Configuración Epysa',
+        'menu_slug'  => 'configuracion-epysa',
+        'capability' => 'edit_posts',
+        'redirect'   => false,
+        'icon_url'   => 'dashicons-admin-settings',
+        'position'   => 2,
     ));
-    
 }

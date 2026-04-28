@@ -7,6 +7,31 @@
 // Seguridad: Evitar acceso directo al archivo
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * fputcsv que mitiga CSV Injection.
+ *
+ * Excel/Sheets interpreta como fórmula cualquier celda que empiece con
+ * "=", "+", "-", "@", tab o salto de línea. Si un atacante registra su
+ * nombre como '=cmd|...' y un admin abre el CSV, se ejecuta. Prefijamos
+ * con apóstrofo para neutralizar.
+ */
+function epysa_csv_safe_fputcsv($handle, array $row) {
+    $sanitized = array_map(function ($cell) {
+        if (!is_string($cell)) {
+            return $cell;
+        }
+        if ($cell === '') {
+            return $cell;
+        }
+        $first = $cell[0];
+        if (in_array($first, array('=', '+', '-', '@', "\t", "\r", "\n"), true)) {
+            return "'" . $cell;
+        }
+        return $cell;
+    }, $row);
+    return fputcsv($handle, $sanitized);
+}
+
 // 1. Crear el submenú dentro del Custom Post Type "Historias"
 add_action('admin_menu', 'epysa_exportador_menu');
 function epysa_exportador_menu() {
@@ -71,7 +96,7 @@ function epysa_generar_csv_historias() {
     $output = fopen('php://output', 'w');
     
     // Cabeceras del Excel
-    fputcsv($output, array('ID', 'Titulo de la historia', 'Nombre y apellido del participante', 'Valor seleccionado', 'Fecha de publicacion', 'Votos recibidos'));
+    epysa_csv_safe_fputcsv($output, array('ID', 'Titulo de la historia', 'Nombre y apellido del participante', 'Valor seleccionado', 'Fecha de publicacion', 'Votos recibidos'));
 
     // Paso A: Mapear todos los votos para contarlos eficientemente
     $todos_los_usuarios = get_users();
@@ -121,7 +146,7 @@ function epysa_generar_csv_historias() {
         // Cantidad de votos (del mapeo que hicimos en el Paso A)
         $votos_recibidos = isset($conteo_votos[$id]) ? $conteo_votos[$id] : 0;
         
-        fputcsv($output, array($id, $titulo, $participante, $valor, $fecha, $votos_recibidos));
+        epysa_csv_safe_fputcsv($output, array($id, $titulo, $participante, $valor, $fecha, $votos_recibidos));
     }
     
     fclose($output);
@@ -137,7 +162,7 @@ function epysa_generar_csv_votantes() {
     $output = fopen('php://output', 'w');
     
     // Cabeceras del Excel
-    fputcsv($output, array('ID', 'Nombre y apellido del votante', 'Correo electronico', 'Cantidad de votos emitidos'));
+    epysa_csv_safe_fputcsv($output, array('ID', 'Nombre y apellido del votante', 'Correo electronico', 'Cantidad de votos emitidos'));
 
     $usuarios = get_users();
     
@@ -154,7 +179,7 @@ function epysa_generar_csv_votantes() {
                 $nombre_completo = $user->display_name;
             }
             
-            fputcsv($output, array($user->ID, trim($nombre_completo), $user->user_email, $cantidad_votos));
+            epysa_csv_safe_fputcsv($output, array($user->ID, trim($nombre_completo), $user->user_email, $cantidad_votos));
         }
     }
     

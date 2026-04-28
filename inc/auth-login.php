@@ -34,6 +34,29 @@ function epysa_solicitar_login()
         wp_send_json_error(['message' => 'Debes usar un correo institucional (@epysa.cl).']);
     }
 
+    // 2.5. Rate limiting
+    //   - Por email: cooldown de 60s entre solicitudes (UX: doble click, reenvíos)
+    //   - Por IP: cap de 20/h deslizante (anti-spam, anti-enumeración)
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    $email_cooldown_key = 'epysa_ml_cd_' . md5(strtolower($email));
+    $ip_key = 'epysa_ml_ip_' . md5($ip);
+
+    if (get_transient($email_cooldown_key)) {
+        wp_send_json_error([
+            'message' => 'Por seguridad, espera unos segundos antes de solicitar otro enlace.'
+        ]);
+    }
+
+    $ip_count = (int) get_transient($ip_key);
+    if ($ip_count >= 20) {
+        wp_send_json_error([
+            'message' => 'Demasiadas solicitudes desde tu red. Intenta más tarde.'
+        ]);
+    }
+
+    set_transient($email_cooldown_key, 1, 60);
+    set_transient($ip_key, $ip_count + 1, HOUR_IN_SECONDS);
+
     // 3. Buscar o Crear Usuario
     $user = get_user_by('email', $email);
 

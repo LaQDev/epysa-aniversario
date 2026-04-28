@@ -48,9 +48,9 @@ get_template_part('template-parts/hero');
                 <div class="swiper-pagination"></div>
                 <div class="historias-nav-buttons">
                     <button
-                        class="swiper-button-custom story-prev"><?php include get_template_directory() . '/assets/icons/nav-red-prev.svg'; ?></button>
+                        class="swiper-button-custom story-prev"><?php epysa_svg_inline('assets/icons/nav-red-prev.svg'); ?></button>
                     <button
-                        class="swiper-button-custom story-next"><?php include get_template_directory() . '/assets/icons/nav-red-next.svg'; ?></button>
+                        class="swiper-button-custom story-next"><?php epysa_svg_inline('assets/icons/nav-red-next.svg'); ?></button>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@ get_template_part('template-parts/hero');
             <div class="epysa-modal-overlay" data-close-modal></div>
             <div class="epysa-modal-container">
                 <button class="modal-close-icon"
-                    data-close-modal><?php include get_template_directory() . '/assets/icons/x-close.svg'; ?></button>
+                    data-close-modal><?php epysa_svg_inline('assets/icons/x-close.svg'); ?></button>
                 <div class="modal-content-scroll">
                     <?php if ($video): ?>
                         <div class="modal-video-wrapper"><video controls class="story-video">
@@ -225,9 +225,9 @@ $v_subtitle = get_field('valores_subtitle');
                 </div>
                 <div class="valores-nav-container mt-4 text-end">
                     <button
-                        class="swiper-button-custom swiper-prev"><?php include get_template_directory() . '/assets/icons/nav-red-prev.svg'; ?></button>
+                        class="swiper-button-custom swiper-prev"><?php epysa_svg_inline('assets/icons/nav-red-prev.svg'); ?></button>
                     <button
-                        class="swiper-button-custom swiper-next"><?php include get_template_directory() . '/assets/icons/nav-red-next.svg'; ?></button>
+                        class="swiper-button-custom swiper-next"><?php epysa_svg_inline('assets/icons/nav-red-next.svg'); ?></button>
                 </div>
             </div>
         </div>
