@@ -71,6 +71,15 @@ document.addEventListener('DOMContentLoaded', function () {
             inputBusqueda.addEventListener('input', function () {
                 clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(() => {
+                    // === GTM DATALAYER: BÚSQUEDA TEXTO ===
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'filter_used',
+                        'filter_type': 'busqueda_texto',
+                        'filter_value': this.value
+                    });
+                    // =====================================
+
                     currentPage = 1;
                     cargarHistorias(1, false);
                 }, 500);
@@ -79,7 +88,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Selects
         form.querySelectorAll('select').forEach(select => {
-            select.addEventListener('change', () => {
+            select.addEventListener('change', function () {
+                // === GTM DATALAYER: FILTRO SELECT ===
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'filter_used',
+                    'filter_type': this.name,
+                    'filter_value': this.value
+                });
+                // ====================================
+
                 currentPage = 1;
                 cargarHistorias(1, false);
             });
@@ -146,6 +164,28 @@ function cargarModalHistoria(id) {
             if (response.success) {
                 modalContainer.innerHTML = response.data;
                 initModalSwiper();
+
+                // === GTM DATALAYER: HISTORIA VISTA ===
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'historia_vista',
+                    'historia_id': id
+                });
+                // =====================================
+
+                // === GTM DATALAYER: VIDEO COMPLETADO ===
+                const video = modalContainer.querySelector('video');
+                if (video) {
+                    video.addEventListener('ended', function () {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'video_completado',
+                            'historia_id': id
+                        });
+                    });
+                }
+                // =======================================
+
             } else {
                 modalContainer.innerHTML = '<p class="text-center p-5">Error al cargar.</p>';
             }

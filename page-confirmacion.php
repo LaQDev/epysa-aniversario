@@ -3,6 +3,14 @@
 get_header();
 ?>
 
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'historia_enviada',
+        'form_name': 'participa_aniversario'
+    });
+</script>
+
 <div class="page-confirmacion">
     <div class="container">
         <div class="row">

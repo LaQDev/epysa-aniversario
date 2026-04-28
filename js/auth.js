@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
             abrirAuthModal('view-complete-profile', true); // TRUE = Locked
         } else if (action === 'login_success') {
             abrirAuthModal('view-login-success');
+
+            // === GTM DATALAYER: LOGIN EXITOSO ===
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'login_exitoso',
+                'metodo': 'magic_link'
+            });
+            // ====================================
         }
     } else if (urlParams.has('auth_error')) {
         window.history.replaceState({}, document.title, window.location.pathname);
@@ -56,6 +64,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     if (data.success) {
                         cambiarVistaAuth('view-email-sent');
+
+                        // === GTM DATALAYER: MAGIC LINK SOLICITADO ===
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'magic_link_requested'
+                        });
+                        // ============================================
+
                     } else {
                         errorDiv.innerText = data.data.message;
                         errorDiv.classList.add('visible');
@@ -131,6 +147,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Cambiar título para nuevo usuario
                         const successView = document.getElementById('view-login-success');
                         if (successView) successView.querySelector('.auth-title').innerText = '¡Registro completado!';
+
+                        // === GTM DATALAYER: REGISTRO COMPLETADO ===
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'registro_completado',
+                            'metodo': 'magic_link'
+                        });
+                        // ==========================================
 
                         // 5. NO RECARGAMOS LA PÁGINA AUTOMÁTICAMENTE
                         cambiarVistaAuth('view-login-success');

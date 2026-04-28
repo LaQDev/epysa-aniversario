@@ -46,6 +46,29 @@ document.addEventListener('DOMContentLoaded', function () {
             if (modal) {
                 modal.classList.add('is-open');
                 document.body.style.overflow = 'hidden'; // Bloquear scroll
+
+                // === GTM DATALAYER: HISTORIA VISTA ===
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'historia_vista',
+                    'historia_id': modalId // Pasamos el ID del modal (ej: modal-story-1)
+                });
+                // =====================================
+
+                // === GTM DATALAYER: VIDEO COMPLETADO ===
+                const video = modal.querySelector('video');
+                // Asegurarnos de no agregar el evento múltiples veces si abren y cierran el modal
+                if (video && !video.dataset.gtmTracked) {
+                    video.addEventListener('ended', function() {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'video_completado',
+                            'historia_id': modalId
+                        });
+                    });
+                    video.dataset.gtmTracked = 'true';
+                }
+                // =======================================
             }
         });
     });

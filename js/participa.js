@@ -233,6 +233,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Detener envío si hay errores
         if (!isValid) {
             e.preventDefault();
+
+            // === GTM DATALAYER: EVENTO DE ERROR ===
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'form_error',
+                'form_name': 'participa_aniversario',
+                'error_type': 'validacion_frontend'
+            });
+            // ======================================
+
             // Scroll al primer error
             if (firstErrorElement) {
                 // Intentamos scrollear al .form-group padre para mejor visibilidad
