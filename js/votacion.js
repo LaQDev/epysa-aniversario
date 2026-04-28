@@ -49,6 +49,22 @@ function enviarVotoBackend(postId, accion, btnRef) {
                 // ÉXITO: Actualizar UI
                 actualizarBoton(btnRef, accion);
 
+                // === GTM DATALAYER: EVENTOS DE VOTACIÓN ===
+                window.dataLayer = window.dataLayer || [];
+
+                if (accion === 'votar') {
+                    window.dataLayer.push({
+                        'event': 'voto_emitido',
+                        'historia_id': postId
+                    });
+                } else if (accion === 'quitar') {
+                    window.dataLayer.push({
+                        'event': 'voto_removido',
+                        'historia_id': postId
+                    });
+                }
+                // ==========================================
+
                 if (accion === 'quitar') {
                     cerrarAuthModal();
                     historiaPendienteBorrar = null;
