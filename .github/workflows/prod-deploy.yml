@@ -1,0 +1,30 @@
+name: Release Theme to Production
+
+on:
+  release:
+    types: [published] # Se activa solo al publicar un Release oficial
+
+# Forzamos el uso de Node 24 para evitar avisos de depreciación
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+      
+      - name: Limpiar archivos de desarrollo
+        # Eliminamos carpetas de Git, Actions, módulos y SASS para un tema ligero en producción
+        run: rm -rf .git .github node_modules sass
+      
+      - name: Subir por FTP a Produccion
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.PROD_FTP_SERVER }}
+          username: ${{ secrets.PROD_FTP_USERNAME }}
+          password: ${{ secrets.PROD_FTP_PASSWORD }}
+          # Ruta relativa desde la raíz de la conexión FTP
+          server-dir: /wp-content/themes/epysa-aniversario/
+          # El puerto 21 es el valor por defecto de esta acción
