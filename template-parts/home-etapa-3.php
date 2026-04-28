@@ -227,9 +227,9 @@ if ($destacadas_ids) {
                 <div class="swiper-pagination"></div>
                 <div class="historias-nav-buttons">
                     <button
-                        class="swiper-button-custom story-prev"><?php include get_template_directory() . '/assets/icons/nav-red-prev.svg'; ?></button>
+                        class="swiper-button-custom story-prev"><?php epysa_svg_inline('assets/icons/nav-red-prev.svg'); ?></button>
                     <button
-                        class="swiper-button-custom story-next"><?php include get_template_directory() . '/assets/icons/nav-red-next.svg'; ?></button>
+                        class="swiper-button-custom story-next"><?php epysa_svg_inline('assets/icons/nav-red-next.svg'); ?></button>
                 </div>
             </div>
         </div>
