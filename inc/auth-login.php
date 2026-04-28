@@ -34,22 +34,27 @@ function epysa_solicitar_login()
         wp_send_json_error(['message' => 'Debes usar un correo institucional (@epysa.cl).']);
     }
 
-    // 2.5. Rate limiting (transients, ventana 1 hora)
-    // Evita abuso del envío de magic links: spam de correos, enumeración de usuarios.
+    // 2.5. Rate limiting
+    //   - Por email: cooldown de 60s entre solicitudes (UX: doble click, reenvíos)
+    //   - Por IP: cap de 20/h deslizante (anti-spam, anti-enumeración)
     $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-    $email_key = 'epysa_ml_email_' . md5(strtolower($email));
+    $email_cooldown_key = 'epysa_ml_cd_' . md5(strtolower($email));
     $ip_key = 'epysa_ml_ip_' . md5($ip);
 
-    $email_count = (int) get_transient($email_key);
-    $ip_count = (int) get_transient($ip_key);
-
-    if ($email_count >= 5 || $ip_count >= 20) {
+    if (get_transient($email_cooldown_key)) {
         wp_send_json_error([
-            'message' => 'Has solicitado demasiados enlaces. Intenta nuevamente en una hora.'
+            'message' => 'Por seguridad, espera unos segundos antes de solicitar otro enlace.'
         ]);
     }
 
-    set_transient($email_key, $email_count + 1, HOUR_IN_SECONDS);
+    $ip_count = (int) get_transient($ip_key);
+    if ($ip_count >= 20) {
+        wp_send_json_error([
+            'message' => 'Demasiadas solicitudes desde tu red. Intenta más tarde.'
+        ]);
+    }
+
+    set_transient($email_cooldown_key, 1, 60);
     set_transient($ip_key, $ip_count + 1, HOUR_IN_SECONDS);
 
     // 3. Buscar o Crear Usuario
