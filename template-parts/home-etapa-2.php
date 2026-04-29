@@ -69,7 +69,7 @@ get_template_part('template-parts/hero');
                     data-close-modal><?php epysa_svg_inline('assets/icons/x-close.svg'); ?></button>
                 <div class="modal-content-scroll">
                     <?php if ($video): ?>
-                        <div class="modal-video-wrapper"><video controls class="story-video">
+                        <div class="modal-video-wrapper"><video controls playsinline preload="metadata" class="story-video">
                                 <source src="<?php echo esc_url($video); ?>" type="video/mp4">
                             </video></div><?php endif; ?>
                     <div class="modal-info">
@@ -89,7 +89,8 @@ get_template_part('template-parts/hero');
         <div class="row mb-4">
             <div class="col-12 text-start">
                 <h2 class="section-title">
-                    <?php echo $steps_title ? esc_html($steps_title) : '¿Cómo elegir a los ganadores?'; ?></h2>
+                    <?php echo $steps_title ? esc_html($steps_title) : '¿Cómo elegir a los ganadores?'; ?>
+                </h2>
             </div>
         </div>
         <?php if (have_rows('listado_pasos')): ?>

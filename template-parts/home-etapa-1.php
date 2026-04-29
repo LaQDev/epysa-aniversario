@@ -69,7 +69,7 @@ get_template_part('template-parts/hero');
                     data-close-modal><?php epysa_svg_inline('assets/icons/x-close.svg'); ?></button>
                 <div class="modal-content-scroll">
                     <?php if ($video): ?>
-                        <div class="modal-video-wrapper"><video controls class="story-video">
+                        <div class="modal-video-wrapper"><video controls playsinline preload="metadata" class="story-video">
                                 <source src="<?php echo esc_url($video); ?>" type="video/mp4">
                             </video></div><?php endif; ?>
                     <div class="modal-info">
