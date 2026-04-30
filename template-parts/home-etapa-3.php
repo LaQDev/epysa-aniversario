@@ -366,7 +366,7 @@ foreach ($modal_post_ids as $p_id):
         const activeSlide = swiper.slides[swiper.activeIndex];
         if (!activeSlide) return;
         const source = activeSlide.querySelector('video source[data-src]');
-        if (source && !source.src) {
+        if (source) {
             source.src = source.getAttribute('data-src');
             source.closest('video').load();
         }
@@ -381,7 +381,7 @@ foreach ($modal_post_ids as $p_id):
                 if (modal) {
                     // Cargar video único si no hay carrusel
                     const singleSource = modal.querySelector('.modal-swiper.is-single video source[data-src]');
-                    if (singleSource && !singleSource.src) {
+                    if (singleSource) {
                         singleSource.src = singleSource.getAttribute('data-src');
                         singleSource.closest('video').load();
                     }
