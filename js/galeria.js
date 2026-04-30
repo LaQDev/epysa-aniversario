@@ -193,7 +193,28 @@ function cargarModalHistoria(id) {
         .catch(err => console.error(err));
 }
 
+function loadActiveSlideVideo(swiper) {
+    const activeSlide = swiper.slides[swiper.activeIndex];
+    if (!activeSlide) return;
+    const source = activeSlide.querySelector('video source[data-src]');
+    if (source && !source.src) {
+        source.src = source.getAttribute('data-src');
+        source.closest('video').load();
+    }
+}
+
 function initModalSwiper() {
+    const modalContainer = document.getElementById('modal-historia-container');
+
+    // Video único (sin carrusel): cargarlo directamente
+    if (modalContainer) {
+        const singleSource = modalContainer.querySelector('.modal-swiper.is-single video source[data-src]');
+        if (singleSource && !singleSource.src) {
+            singleSource.src = singleSource.getAttribute('data-src');
+            singleSource.closest('video').load();
+        }
+    }
+
     const swiperEl = document.querySelector('.modal-swiper.is-slider');
     if (!swiperEl) return;
 
@@ -209,10 +230,13 @@ function initModalSwiper() {
             clickable: true,
         },
         on: {
+            init: function () {
+                loadActiveSlideVideo(this);
+            },
             slideChange: function () {
-                // Pausar videos al mover slide
                 const videos = swiperEl.querySelectorAll('video');
                 videos.forEach(v => v.pause());
+                loadActiveSlideVideo(this);
             }
         }
     });

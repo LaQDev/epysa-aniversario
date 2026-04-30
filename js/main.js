@@ -47,6 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 modal.classList.add('is-open');
                 document.body.style.overflow = 'hidden'; // Bloquear scroll
 
+                // Lazy-load fuente del video al abrir el modal (mejora rendimiento en iOS)
+                const source = modal.querySelector('video source[data-src]');
+                if (source && !source.src) {
+                    source.src = source.getAttribute('data-src');
+                    source.closest('video').load();
+                }
+
                 // === GTM DATALAYER: HISTORIA VISTA ===
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({

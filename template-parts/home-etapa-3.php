@@ -313,8 +313,8 @@ foreach ($modal_post_ids as $p_id):
                                 <div class="swiper-slide">
                                     <div class="media-wrapper">
                                         <?php if ($is_video): ?>
-                                            <video controls playsinline>
-                                                <source src="<?php echo esc_url($url); ?>"
+                                            <video controls playsinline preload="none">
+                                                <source data-src="<?php echo esc_url($url); ?>"
                                                     type="<?php echo esc_attr($file['mime']); ?>">
                                             </video>
                                         <?php else: ?>
@@ -362,6 +362,16 @@ foreach ($modal_post_ids as $p_id):
 <?php endforeach; ?>
 
 <script>
+    function epysaLoadSlideVideo(swiper) {
+        const activeSlide = swiper.slides[swiper.activeIndex];
+        if (!activeSlide) return;
+        const source = activeSlide.querySelector('video source[data-src]');
+        if (source && !source.src) {
+            source.src = source.getAttribute('data-src');
+            source.closest('video').load();
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const triggers = document.querySelectorAll('.btn-story-trigger');
         triggers.forEach(trigger => {
@@ -369,9 +379,16 @@ foreach ($modal_post_ids as $p_id):
                 const modalId = this.getAttribute('data-modal-id');
                 const modal = document.getElementById(modalId);
                 if (modal) {
+                    // Cargar video único si no hay carrusel
+                    const singleSource = modal.querySelector('.modal-swiper.is-single video source[data-src]');
+                    if (singleSource && !singleSource.src) {
+                        singleSource.src = singleSource.getAttribute('data-src');
+                        singleSource.closest('video').load();
+                    }
+
                     const swiperEl = modal.querySelector('.modal-swiper.is-slider');
                     if (swiperEl && !swiperEl.swiper) {
-                        new Swiper(swiperEl, {
+                        const swiper = new Swiper(swiperEl, {
                             loop: false,
                             slidesPerView: 1,
                             navigation: {
@@ -383,9 +400,12 @@ foreach ($modal_post_ids as $p_id):
                                 clickable: true,
                             },
                             on: {
+                                init: function () {
+                                    epysaLoadSlideVideo(this);
+                                },
                                 slideChange: function () {
-                                    const videos = swiperEl.querySelectorAll('video');
-                                    videos.forEach(v => v.pause());
+                                    swiperEl.querySelectorAll('video').forEach(v => v.pause());
+                                    epysaLoadSlideVideo(this);
                                 }
                             }
                         });
