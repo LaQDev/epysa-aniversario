@@ -214,9 +214,7 @@ function epysa_cargar_historia_modal()
                         <div class="swiper-slide">
                             <div class="media-wrapper">
                                 <?php if ($is_video): ?>
-                                    <video controls playsinline preload="none">
-                                        <source data-src="<?php echo esc_url($url); ?>" type="<?php echo esc_attr($file['mime']); ?>">
-                                    </video>
+                                    <video controls playsinline preload="none" data-src="<?php echo esc_url($url); ?>"></video>
                                 <?php else: ?>
                                     <img src="<?php echo esc_url($url); ?>" alt="Historia">
                                 <?php endif; ?>

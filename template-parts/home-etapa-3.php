@@ -313,10 +313,7 @@ foreach ($modal_post_ids as $p_id):
                                 <div class="swiper-slide">
                                     <div class="media-wrapper">
                                         <?php if ($is_video): ?>
-                                            <video controls playsinline preload="none">
-                                                <source data-src="<?php echo esc_url($url); ?>"
-                                                    type="<?php echo esc_attr($file['mime']); ?>">
-                                            </video>
+                                            <video controls playsinline preload="none" data-src="<?php echo esc_url($url); ?>"></video>
                                         <?php else: ?>
                                             <img src="<?php echo esc_url($url); ?>" alt="Historia">
                                         <?php endif; ?>
@@ -365,10 +362,10 @@ foreach ($modal_post_ids as $p_id):
     function epysaLoadSlideVideo(swiper) {
         const activeSlide = swiper.slides[swiper.activeIndex];
         if (!activeSlide) return;
-        const source = activeSlide.querySelector('video source[data-src]');
-        if (source) {
-            source.src = source.getAttribute('data-src');
-            source.closest('video').load();
+        const video = activeSlide.querySelector('video[data-src]');
+        if (video && !video.src) {
+            video.src = video.getAttribute('data-src');
+            video.load();
         }
     }
 
@@ -380,10 +377,10 @@ foreach ($modal_post_ids as $p_id):
                 const modal = document.getElementById(modalId);
                 if (modal) {
                     // Cargar video único si no hay carrusel
-                    const singleSource = modal.querySelector('.modal-swiper.is-single video source[data-src]');
-                    if (singleSource) {
-                        singleSource.src = singleSource.getAttribute('data-src');
-                        singleSource.closest('video').load();
+                    const singleVideo = modal.querySelector('.modal-swiper.is-single video[data-src]');
+                    if (singleVideo && !singleVideo.src) {
+                        singleVideo.src = singleVideo.getAttribute('data-src');
+                        singleVideo.load();
                     }
 
                     const swiperEl = modal.querySelector('.modal-swiper.is-slider');

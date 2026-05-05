@@ -20,7 +20,7 @@ function epysa_scripts()
     wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
 
     // 4. Main JS
-    wp_enqueue_script('epysa-main-js', get_template_directory_uri() . '/js/main.js', array('swiper-js'), '1.2', true);
+    wp_enqueue_script('epysa-main-js', get_template_directory_uri() . '/js/main.js', array('swiper-js'), '1.3', true);
 
     // 5. Script Específico: Página Participa
     if (is_page_template('page-participa.php')) {
@@ -46,7 +46,7 @@ function epysa_scripts()
     if (is_page_template('page-galeria.php') || is_page_template('page-perfil.php') || is_page_template('page-galeria-historias.php')) {
 
         // JS de la Galería (Modales, Swiper, Carga AJAX)
-        wp_enqueue_script('galeria-js', get_template_directory_uri() . '/js/galeria.js', array('swiper-js', 'auth-js'), '1.2', true);
+        wp_enqueue_script('galeria-js', get_template_directory_uri() . '/js/galeria.js', array('swiper-js', 'auth-js'), '1.3', true);
 
         // JS del Perfil (Solo si estamos en perfil)
         if (is_page_template('page-perfil.php')) {

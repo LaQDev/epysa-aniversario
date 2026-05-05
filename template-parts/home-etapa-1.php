@@ -69,9 +69,7 @@ get_template_part('template-parts/hero');
                     data-close-modal><?php epysa_svg_inline('assets/icons/x-close.svg'); ?></button>
                 <div class="modal-content-scroll">
                     <?php if ($video): ?>
-                        <div class="modal-video-wrapper"><video controls playsinline preload="none" class="story-video">
-                                <source data-src="<?php echo esc_url($video); ?>" type="video/mp4">
-                            </video></div><?php endif; ?>
+                        <div class="modal-video-wrapper"><video controls playsinline preload="none" class="story-video" data-src="<?php echo esc_url($video); ?>"></video></div><?php endif; ?>
                     <div class="modal-info">
                         <h3 class="modal-name"><?php echo esc_html(get_sub_field('nombre')); ?></h3>
                         <div class="modal-bio"><?php echo esc_html(get_sub_field('bajada')); ?></div>

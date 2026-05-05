@@ -48,10 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.body.style.overflow = 'hidden'; // Bloquear scroll
 
                 // Lazy-load fuente del video al abrir el modal (mejora rendimiento en iOS)
-                const source = modal.querySelector('video source[data-src]');
-                if (source) {
-                    source.src = source.getAttribute('data-src');
-                    source.closest('video').load();
+                // Se asigna src directamente al <video> (iOS Safari tiene bugs con <source> dinámico)
+                const lazyVideo = modal.querySelector('video[data-src]');
+                if (lazyVideo && !lazyVideo.src) {
+                    lazyVideo.src = lazyVideo.getAttribute('data-src');
+                    lazyVideo.load();
                 }
 
                 // === GTM DATALAYER: HISTORIA VISTA ===
