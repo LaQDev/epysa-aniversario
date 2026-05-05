@@ -196,10 +196,10 @@ function cargarModalHistoria(id) {
 function loadActiveSlideVideo(swiper) {
     const activeSlide = swiper.slides[swiper.activeIndex];
     if (!activeSlide) return;
-    const source = activeSlide.querySelector('video source[data-src]');
-    if (source) {
-        source.src = source.getAttribute('data-src');
-        source.closest('video').load();
+    const video = activeSlide.querySelector('video[data-src]');
+    if (video && !video.src) {
+        video.src = video.getAttribute('data-src');
+        video.load();
     }
 }
 
@@ -208,10 +208,10 @@ function initModalSwiper() {
 
     // Video único (sin carrusel): cargarlo directamente
     if (modalContainer) {
-        const singleSource = modalContainer.querySelector('.modal-swiper.is-single video source[data-src]');
-        if (singleSource) {
-            singleSource.src = singleSource.getAttribute('data-src');
-            singleSource.closest('video').load();
+        const singleVideo = modalContainer.querySelector('.modal-swiper.is-single video[data-src]');
+        if (singleVideo && !singleVideo.src) {
+            singleVideo.src = singleVideo.getAttribute('data-src');
+            singleVideo.load();
         }
     }
 
