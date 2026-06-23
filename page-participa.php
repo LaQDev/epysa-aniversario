@@ -236,6 +236,7 @@ get_header();
                                         <span class="btn-fake-black">Buscar en mi dispositivo</span>
                                         <div class="file-meta mt-2">Formatos aceptados: JPG, PNG o MP4. (Máx. 3
                                             archivos)</div>
+                                        <div class="file-meta mt-1">Peso máximo por archivo: 12 MB.</div>
                                     </div>
                                 </div>
                                 <div class="form-hint">Debes subir al menos un archivo.</div>
@@ -288,4 +289,21 @@ get_header();
         </div>
     </div>
 </div>
+
+<!-- Modal: archivo supera el peso máximo -->
+<div id="modal-archivo-peso" class="epysa-modal" role="dialog" aria-modal="true" aria-labelledby="modal-peso-titulo">
+    <div class="epysa-modal-overlay" onclick="cerrarModalPeso()"></div>
+    <div class="epysa-modal-container epysa-modal-alert">
+        <button class="modal-close-btn" onclick="cerrarModalPeso()" aria-label="Cerrar">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/x-close.svg" alt="Cerrar">
+        </button>
+        <div class="modal-alert-icon">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/modal/icon-error.svg" alt="">
+        </div>
+        <h3 class="modal-alert-title" id="modal-peso-titulo">Archivo demasiado grande</h3>
+        <p class="modal-alert-desc">El archivo <strong id="modal-peso-filename"></strong> supera el límite permitido de <strong>12 MB</strong>. Por favor selecciona un archivo más liviano.</p>
+        <button class="btn btn-primary" onclick="cerrarModalPeso()">Entendido</button>
+    </div>
+</div>
+
 <?php get_footer(); ?>
