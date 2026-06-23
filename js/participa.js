@@ -15,6 +15,28 @@ document.addEventListener('DOMContentLoaded', function () {
     // Array para almacenar los archivos válidos (Fuente de verdad)
     let uploadedFiles = [];
     const MAX_FILES = 3;
+    const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB en bytes
+
+    // --- MODAL DE PESO MÁXIMO ---
+    const modalPeso = document.getElementById('modal-archivo-peso');
+    const modalPesoFilename = document.getElementById('modal-peso-filename');
+
+    window.cerrarModalPeso = function () {
+        if (modalPeso) modalPeso.classList.remove('is-open');
+    };
+
+    function abrirModalPeso(filename) {
+        if (!modalPeso || !modalPesoFilename) return;
+        modalPesoFilename.textContent = filename;
+        modalPeso.classList.add('is-open');
+    }
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modalPeso && modalPeso.classList.contains('is-open')) {
+            cerrarModalPeso();
+        }
+    });
 
     // --- 1. CONTADOR DE CARACTERES (Relato) ---
     const relato = document.getElementById('relato-text');
@@ -73,6 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         newFiles.forEach(file => {
+            // Validar peso máximo (12 MB)
+            if (file.size > MAX_FILE_SIZE) {
+                abrirModalPeso(file.name);
+                return;
+            }
+
             // Validar tipo (Imagen o Video)
             if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
                 // Agregar al array maestro
