@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         if ($pid) {
             update_field('nombre', $nombre, $pid);
             update_field('apellido', $apellido, $pid);
-            update_post_meta($pid, 'empresa', $empresa);
-            update_post_meta($pid, 'region', $region);
+            update_field('empresa', $empresa, $pid);
+            update_field('region', $region, $pid);
             update_field('email_participante', $email, $pid);
             update_field('anos_epysa', $anos, $pid);
             update_field('valor_epysa', $valor, $pid);
@@ -79,6 +79,18 @@ $premio_desc = get_field('premio_bajada');
 $premio_img = get_field('premio_imagen');
 
 get_header();
+// Obtener choices desde ACF para mantener sincronía entre el form y la BD
+$acf_region_choices  = [];
+$acf_empresa_choices = [];
+
+if (function_exists('acf_get_field_groups')) {
+    foreach (acf_get_field_groups(['post_type' => 'historia']) as $group) {
+        foreach (acf_get_fields($group['key']) ?: [] as $field) {
+            if ($field['name'] === 'region')  $acf_region_choices  = $field['choices'] ?? [];
+            if ($field['name'] === 'empresa') $acf_empresa_choices = $field['choices'] ?? [];
+        }
+    }
+}
 ?>
 
 <div class="page-participa">
@@ -116,11 +128,9 @@ get_header();
                                 <label class="form-label">Empresa <span class="asterisk">*</span></label>
                                 <select name="empresa" class="form-select" required>
                                     <option value="" disabled selected>Selecciona tu empresa</option>
-                                    <option value="Epysa Buses">Epysa Buses</option>
-                                    <option value="Epysa Equipos">Epysa Equipos</option>
-                                    <option value="Mundo Buses">Mundo Buses</option>
-                                    <option value="Fitrans">Fitrans</option>
-                                    <option value="Alianza Inmobiliaria">Alianza Inmobiliaria</option>
+                                    <?php foreach ($acf_empresa_choices as $key => $label) : ?>
+                                        <option value="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <div class="form-hint">Selecciona tu empresa.</div>
                             </div>
@@ -128,25 +138,9 @@ get_header();
                                 <label class="form-label">Región <span class="asterisk">*</span></label>
                                 <select name="region" class="form-select" required>
                                     <option value="" disabled selected>Selecciona una región</option>
-                                    <option value="Arica y Parinacota">Arica y Parinacota</option>
-                                    <option value="Tarapacá">Tarapacá</option>
-                                    <option value="Antofagasta">Antofagasta</option>
-                                    <option value="Atacama">Atacama</option>
-                                    <option value="Coquimbo">Coquimbo</option>
-                                    <option value="Valparaíso">Valparaíso</option>
-                                    <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
-                                    <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo
-                                        O'Higgins</option>
-                                    <option value="Maule">Maule</option>
-                                    <option value="Ñuble">Ñuble</option>
-                                    <option value="Biobío">Biobío</option>
-                                    <option value="La Araucanía">La Araucanía</option>
-                                    <option value="Los Ríos">Los Ríos</option>
-                                    <option value="Los Lagos">Los Lagos</option>
-                                    <option value="Aysén del General Carlos Ibáñez del Campo">Aysén del General Carlos
-                                        Ibáñez del Campo</option>
-                                    <option value="Magallanes y de la Antártica Chilena">Magallanes y de la Antártica
-                                        Chilena</option>
+                                    <?php foreach ($acf_region_choices as $key => $label) : ?>
+                                        <option value="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <div class="form-hint">Selecciona tu región.</div>
                             </div>
