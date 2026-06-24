@@ -6,7 +6,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('EPYSA_MAX_UPLOAD_SIZE', 120 * 1024 * 1024); // 120 MB
+define('EPYSA_MAX_UPLOAD_SIZE', 200 * 1024 * 1024); // 200 MB
 
 add_action('wp_ajax_epysa_upload_chunk',        'epysa_ajax_upload_chunk');
 add_action('wp_ajax_nopriv_epysa_upload_chunk', 'epysa_ajax_upload_chunk');
