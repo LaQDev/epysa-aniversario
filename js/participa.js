@@ -2,23 +2,23 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('participa-form');
-
-    // Si no existe el formulario en esta página, no ejecutamos nada
     if (!form) return;
 
-    // --- VARIABLES GLOBALES ---
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('materiales-input');
-    const gallery = document.getElementById('preview-gallery');
-    const uiContent = document.getElementById('upload-ui-content');
+    const dropZone            = document.getElementById('drop-zone');
+    const fileInput           = document.getElementById('materiales-input');
+    const gallery             = document.getElementById('preview-gallery');
+    const attachmentContainer = document.getElementById('attachment-ids-container');
+    const submitBtn           = document.getElementById('submit-btn');
 
-    // Array para almacenar los archivos válidos (Fuente de verdad)
-    let uploadedFiles = [];
-    const MAX_FILES = 3;
-    const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB en bytes
+    // fileQueue: array de objetos { file, uid, card, progressBar, status, attachmentId }
+    let fileQueue = [];
 
-    // --- MODAL DE PESO MÁXIMO ---
-    const modalPeso = document.getElementById('modal-archivo-peso');
+    const MAX_FILES      = 3;
+    const MAX_FILE_SIZE  = 40 * 1024 * 1024; // 40 MB
+    const CHUNK_SIZE     =  2 * 1024 * 1024; //  2 MB
+
+    // --- 1. MODAL DE PESO MÁXIMO ---
+    const modalPeso         = document.getElementById('modal-archivo-peso');
     const modalPesoFilename = document.getElementById('modal-peso-filename');
 
     window.cerrarModalPeso = function () {
@@ -31,35 +31,27 @@ document.addEventListener('DOMContentLoaded', function () {
         modalPeso.classList.add('is-open');
     }
 
-    // Cerrar con Escape
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && modalPeso && modalPeso.classList.contains('is-open')) {
             cerrarModalPeso();
         }
     });
 
-    // --- 1. CONTADOR DE CARACTERES (Relato) ---
-    const relato = document.getElementById('relato-text');
+    // --- 2. CONTADOR DE CARACTERES (Relato) ---
+    const relato          = document.getElementById('relato-text');
     const charCountDisplay = document.getElementById('current-chars');
 
     if (relato && charCountDisplay) {
         relato.addEventListener('input', function () {
-            const currentLength = this.value.length;
-            charCountDisplay.textContent = currentLength;
-
-            if (currentLength >= 1500) {
-                charCountDisplay.style.color = '#E30613';
-            } else {
-                charCountDisplay.style.color = '';
-            }
+            const len = this.value.length;
+            charCountDisplay.textContent = len;
+            charCountDisplay.style.color = len >= 1500 ? '#E30613' : '';
         });
     }
 
-    // --- 2. DRAG & DROP Y CARGA DE ARCHIVOS ---
-
-    // Prevenir comportamientos por defecto del navegador
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, preventDefaults, false);
+    // --- 3. DRAG & DROP ---
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+        dropZone.addEventListener(ev, preventDefaults, false);
     });
 
     function preventDefaults(e) {
@@ -67,147 +59,244 @@ document.addEventListener('DOMContentLoaded', function () {
         e.stopPropagation();
     }
 
-    // Estilos visuales al arrastrar
-    dropZone.addEventListener('dragover', () => dropZone.classList.add('drag-over'));
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('dragover',  () => dropZone.classList.add('drag-over'));
+    ['dragleave', 'drop'].forEach(ev => {
+        dropZone.addEventListener(ev, () => dropZone.classList.remove('drag-over'));
     });
 
-    // Manejar archivos soltados (Drop)
-    dropZone.addEventListener('drop', (e) => {
-        const dt = e.dataTransfer;
-        handleFiles(dt.files);
-    });
-
-    // Manejar archivos seleccionados por click (Input)
+    dropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
     fileInput.addEventListener('change', function () {
         handleFiles(this.files);
+        this.value = '';
     });
 
-    // Lógica principal de procesamiento de archivos
+    // --- 4. PROCESAMIENTO DE ARCHIVOS ---
     function handleFiles(files) {
         const newFiles = Array.from(files);
 
-        // Validar cantidad máxima
-        if ((uploadedFiles.length + newFiles.length) > MAX_FILES) {
+        if ((fileQueue.length + newFiles.length) > MAX_FILES) {
             alert(`Solo puedes subir un máximo de ${MAX_FILES} archivos en total.`);
             return;
         }
 
         newFiles.forEach(file => {
-            // Validar peso máximo (12 MB)
             if (file.size > MAX_FILE_SIZE) {
                 abrirModalPeso(file.name);
                 return;
             }
-
-            // Validar tipo (Imagen o Video)
-            if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
-                // Agregar al array maestro
-                uploadedFiles.push(file);
-                // Crear tarjeta visual
-                createPreviewCard(file);
-            } else {
+            if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
                 alert(`El archivo "${file.name}" no es válido. Solo se permiten imágenes (JPG, PNG) o videos (MP4).`);
+                return;
             }
+
+            const entry = {
+                file,
+                uid:          generateUid(),
+                card:         null,
+                progressBar:  null,
+                status:       'uploading',
+                attachmentId: null,
+            };
+
+            fileQueue.push(entry);
+            buildPreviewCard(entry);
+            clearError(document.getElementById('group-materiales'));
+            updateSubmitState();
+
+            uploadFileInChunks(entry);
         });
-
-        // Limpiar error visual si existía
-        clearError(document.getElementById('group-materiales'));
-
-        // Resetear input value para permitir seleccionar el mismo archivo de nuevo si se borró
-        // (La sincronización real ocurre al enviar el form)
-        fileInput.value = '';
     }
 
-    // Crear Tarjeta de Previsualización (DOM)
-    function createPreviewCard(file) {
-        // Crear contenedor tarjeta
+    // --- 5. TARJETA DE PREVISUALIZACIÓN ---
+    function buildPreviewCard(entry) {
+        const { file } = entry;
         const card = document.createElement('div');
         card.className = 'file-card';
 
-        // Wrapper de la imagen/video
         const thumbWrapper = document.createElement('div');
-        thumbWrapper.className = 'thumb-wrapper is-loading'; // Clase para efecto Blur inicial
+        thumbWrapper.className = 'thumb-wrapper is-loading';
 
-        // Elemento Media
-        let mediaElement;
-        const objectUrl = URL.createObjectURL(file); // URL temporal
-
+        const objectUrl = URL.createObjectURL(file);
+        let mediaEl;
         if (file.type.startsWith('video/')) {
-            mediaElement = document.createElement('video');
-            mediaElement.muted = true; // Muteado para evitar autoplay con sonido
-            // mediaElement.playsInline = true; // Opcional
+            mediaEl = document.createElement('video');
+            mediaEl.muted = true;
         } else {
-            mediaElement = document.createElement('img');
+            mediaEl = document.createElement('img');
         }
-        mediaElement.src = objectUrl;
+        mediaEl.src = objectUrl;
 
-        // Botón Eliminar
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn-delete';
         deleteBtn.type = 'button';
-        // Usamos epysa_vars.theme_url para la ruta correcta del icono
         deleteBtn.innerHTML = `<img src="${epysa_vars.theme_url}/assets/icons/trash.svg" alt="Borrar">`;
-        deleteBtn.onclick = () => removeFile(file, card);
+        deleteBtn.onclick = () => removeFile(entry);
 
-        // Barra de Progreso
         const progressContainer = document.createElement('div');
         progressContainer.className = 'progress-container';
         progressContainer.style.display = 'block';
 
         const progressBar = document.createElement('div');
         progressBar.className = 'progress-bar';
-        // Iniciamos en 0%
         progressBar.style.width = '0%';
+        progressBar.style.transition = 'width 0.15s linear';
 
-        // Nombre del archivo
         const fileName = document.createElement('span');
         fileName.className = 'file-name';
         fileName.textContent = file.name;
 
-        // Armar estructura DOM
         progressContainer.appendChild(progressBar);
-        thumbWrapper.appendChild(mediaElement);
+        thumbWrapper.appendChild(mediaEl);
         thumbWrapper.appendChild(progressContainer);
-
         card.appendChild(deleteBtn);
         card.appendChild(thumbWrapper);
         card.appendChild(fileName);
-
-        // Insertar en la galería
         gallery.appendChild(card);
 
-        // --- SIMULACIÓN DE CARGA (UX) ---
-        // 1. Iniciar animación de barra
-        setTimeout(() => {
-            progressBar.style.width = '100%';
-        }, 50);
-
-        // 2. Finalizar carga (Quitar blur y barra)
-        setTimeout(() => {
-            thumbWrapper.classList.remove('is-loading');
-            progressContainer.style.opacity = '0'; // Desvanecer barra
-            setTimeout(() => { progressContainer.style.display = 'none'; }, 300);
-        }, 1500); // 1.5 segundos de "carga"
+        entry.card        = card;
+        entry.progressBar = progressBar;
     }
 
-    // Eliminar archivo
-    function removeFile(fileToRemove, cardElement) {
-        // Filtrar el array global
-        uploadedFiles = uploadedFiles.filter(f => f !== fileToRemove);
-        // Remover del DOM
-        cardElement.remove();
-        // Liberar memoria del objeto URL
-        // URL.revokeObjectURL(...); // Opcional pero recomendado
+    // --- 6. SUBIDA EN CHUNKS ---
+    async function uploadFileInChunks(entry) {
+        const { file, uid } = entry;
+        const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+
+        try {
+            for (let i = 0; i < totalChunks; i++) {
+                if (entry.status === 'cancelled') return;
+
+                const start = i * CHUNK_SIZE;
+                const end   = Math.min(start + CHUNK_SIZE, file.size);
+                const blob  = file.slice(start, end);
+
+                const formData = new FormData();
+                formData.append('action',       'epysa_upload_chunk');
+                formData.append('nonce',        epysa_vars.upload_nonce);
+                formData.append('file_uid',     uid);
+                formData.append('chunk_index',  i);
+                formData.append('total_chunks', totalChunks);
+                formData.append('file_name',    file.name);
+                formData.append('file_type',    file.type);
+                formData.append('total_size',   file.size);
+                formData.append('chunk',        blob, file.name);
+
+                const result = await sendChunk(formData, i, totalChunks, entry.progressBar);
+
+                if (!result.success) {
+                    throw new Error(result.data?.message || 'Error al subir el fragmento.');
+                }
+
+                if (result.data.status === 'complete') {
+                    entry.attachmentId = result.data.attachment_id;
+                    markDone(entry);
+                    addAttachmentInput(result.data.attachment_id);
+                    updateSubmitState();
+                    return;
+                }
+            }
+        } catch (err) {
+            if (entry.status !== 'cancelled') {
+                markError(entry);
+                updateSubmitState();
+            }
+        }
     }
 
-    // --- 3. VALIDACIÓN AL ENVIAR (SUBMIT) ---
+    function sendChunk(formData, chunkIndex, totalChunks, progressBar) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable && progressBar) {
+                    const overall = Math.round(((chunkIndex + e.loaded / e.total) / totalChunks) * 100);
+                    progressBar.style.width = overall + '%';
+                }
+            });
+
+            xhr.addEventListener('load', () => {
+                try {
+                    resolve(JSON.parse(xhr.responseText));
+                } catch {
+                    reject(new Error('Respuesta inválida del servidor.'));
+                }
+            });
+
+            xhr.addEventListener('error',   () => reject(new Error('Error de red al subir el archivo.')));
+            xhr.addEventListener('timeout', () => reject(new Error('Tiempo de espera agotado.')));
+
+            xhr.open('POST', epysa_vars.ajax_url);
+            xhr.timeout = 60000; // 60 s por chunk
+            xhr.send(formData);
+        });
+    }
+
+    // --- 7. ESTADOS DE TARJETA ---
+    function markDone(entry) {
+        entry.status = 'done';
+        const thumbWrapper      = entry.card.querySelector('.thumb-wrapper');
+        const progressContainer = entry.card.querySelector('.progress-container');
+
+        thumbWrapper.classList.remove('is-loading');
+        progressContainer.style.opacity = '0';
+        setTimeout(() => { progressContainer.style.display = 'none'; }, 300);
+
+        const check = document.createElement('div');
+        check.className = 'upload-check';
+        check.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7L5.5 10.5L12 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+        thumbWrapper.appendChild(check);
+    }
+
+    function markError(entry) {
+        entry.status = 'error';
+        const thumbWrapper      = entry.card.querySelector('.thumb-wrapper');
+        const progressContainer = entry.card.querySelector('.progress-container');
+
+        thumbWrapper.classList.remove('is-loading');
+        thumbWrapper.classList.add('has-error');
+        progressContainer.style.display = 'none';
+        entry.card.classList.add('has-upload-error');
+    }
+
+    // --- 8. INPUTS OCULTOS DE ATTACHMENT IDs ---
+    function addAttachmentInput(id) {
+        const input = document.createElement('input');
+        input.type                  = 'hidden';
+        input.name                  = 'attachment_ids[]';
+        input.value                 = id;
+        input.dataset.attachmentId  = id;
+        attachmentContainer.appendChild(input);
+    }
+
+    // --- 9. ELIMINAR ARCHIVO ---
+    function removeFile(entry) {
+        entry.status = 'cancelled';
+        entry.card.remove();
+        fileQueue = fileQueue.filter(e => e !== entry);
+
+        if (entry.attachmentId) {
+            const input = attachmentContainer.querySelector(`[data-attachment-id="${entry.attachmentId}"]`);
+            if (input) input.remove();
+        }
+
+        updateSubmitState();
+    }
+
+    // --- 10. ESTADO DEL BOTÓN SUBMIT ---
+    function updateSubmitState() {
+        if (!submitBtn) return;
+        const uploading = fileQueue.some(e => e.status === 'uploading');
+        submitBtn.disabled    = uploading;
+        submitBtn.textContent = uploading ? 'Subiendo archivos...' : 'Enviar mi historia';
+    }
+
+    // --- 11. VALIDACIÓN AL ENVIAR ---
     form.addEventListener('submit', function (e) {
         let isValid = true;
         let firstErrorElement = null;
 
-        // A. Validar Inputs de Texto
         const inputs = form.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], select, textarea');
         inputs.forEach(input => {
             if (!validateField(input)) {
@@ -216,8 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // B. Validar Radio Buttons (Valores)
-        const radioGroup = document.querySelector('input[name="valor"]:checked');
+        const radioGroup    = document.querySelector('input[name="valor"]:checked');
         const radioContainer = document.getElementById('group-valor');
         if (!radioGroup) {
             showError(radioContainer);
@@ -227,29 +315,26 @@ document.addEventListener('DOMContentLoaded', function () {
             clearError(radioContainer);
         }
 
-        // C. Validar Archivos (Nueva Lógica)
-        const fotoContainer = document.getElementById('group-materiales');
+        const fotoContainer  = document.getElementById('group-materiales');
+        const uploadingFiles = fileQueue.filter(e => e.status === 'uploading');
+        const doneFiles      = fileQueue.filter(e => e.status === 'done');
 
-        if (uploadedFiles.length === 0) {
+        if (uploadingFiles.length > 0) {
+            e.preventDefault();
+            alert('Espera a que terminen de subirse todos los archivos antes de enviar.');
+            return;
+        }
+
+        if (doneFiles.length === 0) {
             showError(fotoContainer);
             isValid = false;
             if (!firstErrorElement) firstErrorElement = fotoContainer;
         } else {
             clearError(fotoContainer);
-
-            // --- SINCRONIZACIÓN FINAL ---
-            // Creamos un DataTransfer para actualizar el input[type="file"] real
-            // con los archivos que están en nuestro array 'uploadedFiles'
-            const dataTransfer = new DataTransfer();
-            uploadedFiles.forEach(file => dataTransfer.items.add(file));
-            fileInput.files = dataTransfer.files;
         }
 
-        // D. Validar Checkbox Legal
-        const legalCheck = document.getElementById('legal-check');
-        // Buscamos el contenedor padre .form-group para mostrar el error
+        const legalCheck     = document.getElementById('legal-check');
         const legalContainer = legalCheck.closest('.form-group');
-
         if (!legalCheck.checked) {
             showError(legalContainer);
             isValid = false;
@@ -258,74 +343,52 @@ document.addEventListener('DOMContentLoaded', function () {
             clearError(legalContainer);
         }
 
-        // Detener envío si hay errores
         if (!isValid) {
             e.preventDefault();
-
-            // === GTM DATALAYER: EVENTO DE ERROR ===
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'form_error',
+                'event':     'form_error',
                 'form_name': 'participa_aniversario',
                 'error_type': 'validacion_frontend'
             });
-            // ======================================
-
-            // Scroll al primer error
             if (firstErrorElement) {
-                // Intentamos scrollear al .form-group padre para mejor visibilidad
                 const group = firstErrorElement.closest('.form-group') || firstErrorElement;
                 group.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
     });
 
-    // --- FUNCIONES AUXILIARES DE VALIDACIÓN ---
-
+    // --- FUNCIONES AUXILIARES ---
     function validateField(input) {
         const group = input.closest('.form-group');
-        let isValid = true;
+        let valid = true;
 
         if (!input.value.trim()) {
-            isValid = false;
+            valid = false;
         } else if (input.type === 'email') {
-            // Validación de formato de correo electrónico
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(input.value.trim())) {
-                isValid = false;
-            }
+            if (!emailRegex.test(input.value.trim())) valid = false;
         }
 
-        if (!isValid) {
-            showError(group);
-            return false;
-        } else {
-            clearError(group);
-            return true;
-        }
+        if (!valid) { showError(group); return false; }
+        clearError(group);
+        return true;
     }
 
-    function showError(group) {
-        if (group) group.classList.add('has-error');
-    }
+    function showError(group)  { if (group) group.classList.add('has-error'); }
+    function clearError(group) { if (group) group.classList.remove('has-error'); }
 
-    function clearError(group) {
-        if (group) group.classList.remove('has-error');
-    }
-
-    // Limpiar errores en tiempo real al escribir
     form.querySelectorAll('input, select, textarea').forEach(el => {
         el.addEventListener('input', function () {
-            if (this.type !== 'file') { // El file se maneja en handleFiles
-                clearError(this.closest('.form-group'));
-            }
+            if (this.type !== 'file') clearError(this.closest('.form-group'));
             if (this.type === 'radio') clearError(document.getElementById('group-valor'));
         });
-
         el.addEventListener('change', function () {
-            if (this.type === 'checkbox') {
-                clearError(this.closest('.form-group'));
-            }
+            if (this.type === 'checkbox') clearError(this.closest('.form-group'));
         });
     });
+
+    function generateUid() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+    }
 });
