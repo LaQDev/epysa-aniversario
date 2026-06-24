@@ -226,7 +226,7 @@ get_header();
                                         <span class="btn-fake-black">Buscar en mi dispositivo</span>
                                         <div class="file-meta mt-2">Formatos aceptados: JPG, PNG o MP4. (Máx. 3
                                             archivos)</div>
-                                        <div class="file-meta mt-1">Peso máximo por archivo: 40 MB.</div>
+                                        <div class="file-meta mt-1">Peso máximo por archivo: 120 MB.</div>
                                     </div>
                                 </div>
                                 <div class="form-hint">Debes subir al menos un archivo.</div>
@@ -293,7 +293,7 @@ get_header();
             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/modal/icon-error.svg" alt="">
         </div>
         <h3 class="modal-alert-title" id="modal-peso-titulo">Archivo demasiado grande</h3>
-        <p class="modal-alert-desc">El archivo <strong id="modal-peso-filename"></strong> supera el límite permitido de <strong>40 MB</strong>. Por favor selecciona un archivo más liviano.</p>
+        <p class="modal-alert-desc">El archivo <strong id="modal-peso-filename"></strong> supera el límite permitido de <strong>120 MB</strong>. Por favor selecciona un archivo más liviano.</p>
         <button class="btn btn-primary" onclick="cerrarModalPeso()">Entendido</button>
     </div>
 </div>

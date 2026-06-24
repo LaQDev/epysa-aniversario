@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let fileQueue = [];
 
     const MAX_FILES      = 3;
-    const MAX_FILE_SIZE  = 40 * 1024 * 1024; // 40 MB
+    const MAX_FILE_SIZE  = 120 * 1024 * 1024; // 120 MB
     const CHUNK_SIZE     =  2 * 1024 * 1024; //  2 MB
 
     // --- 1. MODAL DE PESO MÁXIMO ---
