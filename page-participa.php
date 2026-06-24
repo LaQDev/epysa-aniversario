@@ -82,12 +82,14 @@ get_header();
 // Obtener choices desde ACF para mantener sincronía entre el form y la BD
 $acf_region_choices  = [];
 $acf_empresa_choices = [];
+$acf_valor_choices   = [];
 
 if (function_exists('acf_get_field_groups')) {
     foreach (acf_get_field_groups(['post_type' => 'historia']) as $group) {
         foreach (acf_get_fields($group['key']) ?: [] as $field) {
-            if ($field['name'] === 'region')  $acf_region_choices  = $field['choices'] ?? [];
-            if ($field['name'] === 'empresa') $acf_empresa_choices = $field['choices'] ?? [];
+            if ($field['name'] === 'region')     $acf_region_choices  = $field['choices'] ?? [];
+            if ($field['name'] === 'empresa')    $acf_empresa_choices = $field['choices'] ?? [];
+            if ($field['name'] === 'valor_epysa') $acf_valor_choices  = $field['choices'] ?? [];
         }
     }
 }
@@ -163,27 +165,26 @@ if (function_exists('acf_get_field_groups')) {
                                         class="asterisk">*</span></label>
                                 <div class="valores-pills">
                                     <?php
-                                    $valores = ['Entereza', 'Pasión', 'Innovación', 'Seguridad', 'Amistad'];
                                     $icon_map = [
-                                        'pasion' => '/assets/icons/icon-pasion.svg',
-                                        'amistad' => '/assets/icons/icon-amistad.svg',
-                                        'entereza' => '/assets/icons/icon-entereza.svg',
+                                        'pasion'     => '/assets/icons/icon-pasion.svg',
+                                        'amistad'    => '/assets/icons/icon-amistad.svg',
+                                        'entereza'   => '/assets/icons/icon-entereza.svg',
                                         'innovacion' => '/assets/icons/icon-innovacion.svg',
-                                        'seguridad' => '/assets/icons/icon-seguridad.svg',
+                                        'seguridad'  => '/assets/icons/icon-seguridad.svg',
                                     ];
-                                    foreach ($valores as $val):
-                                        $slug = sanitize_title($val);
+                                    foreach ($acf_valor_choices as $key => $label):
+                                        $slug = sanitize_title($key);
                                         $icon_path = get_template_directory() . ($icon_map[$slug] ?? '/assets/icons/icon-valor-default.svg');
                                         ?>
-                                        <input type="radio" class="btn-check" name="valor" id="val-<?php echo $slug; ?>"
-                                            value="<?php echo $val; ?>" required>
-                                        <label class="btn btn-pill-valor val-<?php echo $slug; ?>"
-                                            for="val-<?php echo $slug; ?>">
+                                        <input type="radio" class="btn-check" name="valor" id="val-<?php echo esc_attr($slug); ?>"
+                                            value="<?php echo esc_attr($key); ?>" required>
+                                        <label class="btn btn-pill-valor val-<?php echo esc_attr($slug); ?>"
+                                            for="val-<?php echo esc_attr($slug); ?>">
                                             <span class="pill-icon">
                                                 <?php if (file_exists($icon_path))
                                                     echo file_get_contents($icon_path); ?>
                                             </span>
-                                            <?php echo $val; ?>
+                                            <?php echo esc_html($label); ?>
                                         </label>
                                     <?php endforeach; ?>
                                 </div>
