@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         if ($pid) {
             update_field('nombre', $nombre, $pid);
             update_field('apellido', $apellido, $pid);
-            update_field('empresa', $empresa, $pid);
-            update_field('region', $region, $pid);
+            update_post_meta($pid, 'empresa', $empresa);
+            update_post_meta($pid, 'region', $region);
             update_field('email_participante', $email, $pid);
             update_field('anos_epysa', $anos, $pid);
             update_field('valor_epysa', $valor, $pid);
@@ -96,7 +96,7 @@ get_header();
                         <?php endif; ?>
                     </div>
 
-                    <form method="POST" enctype="multipart/form-data" class="epysa-form" id="participa-form" novalidate>
+                    <form method="POST" class="epysa-form" id="participa-form" novalidate>
                         <input type="hidden" name="action" value="enviar_historia">
                         <?php wp_nonce_field('guardar_historia_action', 'historia_nonce'); ?>
 
