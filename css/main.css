@@ -2687,6 +2687,58 @@ main#primary {
   text-overflow: ellipsis;
   display: block;
 }
+.page-participa .file-upload-box .file-card {
+  /* Ícono de check al completar la subida */
+}
+.page-participa .file-upload-box .file-card .upload-check {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  background-color: #00843D;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: checkPop 0.3s ease-out;
+}
+.page-participa .file-upload-box .file-card {
+  /* Estado de error en subida */
+}
+.page-participa .file-upload-box .file-card.has-upload-error .file-name {
+  color: #E30613;
+}
+.page-participa .file-upload-box .file-card .thumb-wrapper.has-error img,
+.page-participa .file-upload-box .file-card .thumb-wrapper.has-error video {
+  filter: blur(2px) brightness(0.5);
+  opacity: 0.6;
+}
+.page-participa .file-upload-box .file-card .thumb-wrapper.has-error::after {
+  content: "✗";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 5;
+}
+@keyframes checkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .page-participa .file-upload-box .upload-ui-content {
   z-index: 1;
   pointer-events: none;

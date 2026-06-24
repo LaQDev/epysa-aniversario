@@ -39,33 +39,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             update_field('anos_epysa', $anos, $pid);
             update_field('valor_epysa', $valor, $pid);
 
-            if (!empty($_FILES['materiales']['name'][0])) {
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-                require_once(ABSPATH . 'wp-admin/includes/file.php');
-                require_once(ABSPATH . 'wp-admin/includes/media.php');
-
-                $files = $_FILES['materiales'];
-                $count = count($files['name']);
+            if (!empty($_POST['attachment_ids']) && is_array($_POST['attachment_ids'])) {
+                $attachment_ids    = array_map('intval', $_POST['attachment_ids']);
                 $acf_repeater_data = array();
+                $is_first          = true;
 
-                for ($i = 0; $i < $count; $i++) {
-                    if ($files['error'][$i] !== UPLOAD_ERR_OK)
-                        continue;
+                foreach ($attachment_ids as $attach_id) {
+                    if ($attach_id <= 0) continue;
 
-                    $_FILES['single_file'] = array(
-                        'name' => $files['name'][$i],
-                        'type' => $files['type'][$i],
-                        'tmp_name' => $files['tmp_name'][$i],
-                        'error' => $files['error'][$i],
-                        'size' => $files['size'][$i]
-                    );
+                    $attachment = get_post($attach_id);
+                    if (!$attachment || $attachment->post_type !== 'attachment') continue;
 
-                    $attach_id = media_handle_upload('single_file', $pid);
+                    wp_update_post(['ID' => $attach_id, 'post_parent' => $pid]);
+                    $acf_repeater_data[] = array('archivo_subido' => $attach_id);
 
-                    if (!is_wp_error($attach_id)) {
-                        $acf_repeater_data[] = array('archivo_subido' => $attach_id);
-                        if ($i === 0)
-                            set_post_thumbnail($pid, $attach_id);
+                    if ($is_first) {
+                        set_post_thumbnail($pid, $attach_id);
+                        $is_first = false;
                     }
                 }
 
@@ -227,8 +217,8 @@ get_header();
                                 <label class="form-label">Sube tu material audiovisual <span
                                         class="asterisk">*</span></label>
                                 <div class="file-upload-box multiple-upload" id="drop-zone">
-                                    <input type="file" name="materiales[]" id="materiales-input"
-                                        accept="image/*,video/*" multiple required>
+                                    <input type="file" id="materiales-input"
+                                        accept="image/*,video/*" multiple>
                                     <div class="preview-gallery" id="preview-gallery"></div>
                                     <div class="upload-ui-content" id="upload-ui-content">
                                         <p class="mb-3 d-none d-md-block"><strong>Arrastra y suelta tus archivos
@@ -236,7 +226,7 @@ get_header();
                                         <span class="btn-fake-black">Buscar en mi dispositivo</span>
                                         <div class="file-meta mt-2">Formatos aceptados: JPG, PNG o MP4. (Máx. 3
                                             archivos)</div>
-                                        <div class="file-meta mt-1">Peso máximo por archivo: 12 MB.</div>
+                                        <div class="file-meta mt-1">Peso máximo por archivo: 40 MB.</div>
                                     </div>
                                 </div>
                                 <div class="form-hint">Debes subir al menos un archivo.</div>
@@ -276,9 +266,11 @@ get_header();
                                 </div>
                             </div>
 
+                            <div id="attachment-ids-container"></div>
+
                             <div class="form-group full-width mt-4 mb-5">
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-lg">Enviar mi historia</button>
+                                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg">Enviar mi historia</button>
                                 </div>
                             </div>
 
@@ -301,7 +293,7 @@ get_header();
             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/modal/icon-error.svg" alt="">
         </div>
         <h3 class="modal-alert-title" id="modal-peso-titulo">Archivo demasiado grande</h3>
-        <p class="modal-alert-desc">El archivo <strong id="modal-peso-filename"></strong> supera el límite permitido de <strong>12 MB</strong>. Por favor selecciona un archivo más liviano.</p>
+        <p class="modal-alert-desc">El archivo <strong id="modal-peso-filename"></strong> supera el límite permitido de <strong>40 MB</strong>. Por favor selecciona un archivo más liviano.</p>
         <button class="btn btn-primary" onclick="cerrarModalPeso()">Entendido</button>
     </div>
 </div>

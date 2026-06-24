@@ -433,6 +433,55 @@
                 text-overflow: ellipsis;
                 display: block;
             }
+
+            /* Ícono de check al completar la subida */
+            .upload-check {
+                position: absolute;
+                bottom: 8px;
+                right: 8px;
+                width: 22px;
+                height: 22px;
+                background-color: $verde-500;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                animation: checkPop 0.3s ease-out;
+            }
+
+            /* Estado de error en subida */
+            &.has-upload-error {
+                .file-name {
+                    color: $rojo-600;
+                }
+            }
+
+            .thumb-wrapper.has-error {
+                img,
+                video {
+                    filter: blur(2px) brightness(0.5);
+                    opacity: 0.6;
+                }
+
+                &::after {
+                    content: '✗';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 28px;
+                    font-weight: bold;
+                    z-index: 5;
+                }
+            }
+        }
+
+        @keyframes checkPop {
+            0%   { transform: scale(0); opacity: 0; }
+            70%  { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .upload-ui-content {

@@ -35,6 +35,9 @@ require_once EPYSA_THEME_DIR . '/inc/ajax-galeria.php';
 // 7. Login y Registro de usuario
 require_once EPYSA_THEME_DIR . '/inc/auth-login.php';
 
+// 8. Carga de archivos por chunks (formulario de participación)
+require_once EPYSA_THEME_DIR . '/inc/ajax-upload.php';
+
 // 8. Sistema de Exportación de Datos
 require_once get_template_directory() . '/inc/exportador.php';
 

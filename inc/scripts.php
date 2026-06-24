@@ -24,8 +24,12 @@ function epysa_scripts()
 
     // 5. Script Específico: Página Participa
     if (is_page_template('page-participa.php')) {
-        wp_enqueue_script('participa-js', get_template_directory_uri() . '/js/participa.js', array(), '1.1', true);
-        wp_localize_script('participa-js', 'epysa_vars', array('theme_url' => get_template_directory_uri()));
+        wp_enqueue_script('participa-js', get_template_directory_uri() . '/js/participa.js', array(), '2.0', true);
+        wp_localize_script('participa-js', 'epysa_vars', array(
+            'theme_url'    => get_template_directory_uri(),
+            'ajax_url'     => admin_url('admin-ajax.php'),
+            'upload_nonce' => wp_create_nonce('epysa_upload_nonce'),
+        ));
     }
 
     // --- SISTEMA DE AUTENTICACIÓN (Global) ---
